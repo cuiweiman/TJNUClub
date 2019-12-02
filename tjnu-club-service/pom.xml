@@ -13,12 +13,17 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web-services</artifactId>
+            <groupId>com.tjnu.club</groupId>
+            <artifactId>tjnu-club-common</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.tjnu.club</groupId>
             <artifactId>tjnu-club-dao</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web-services</artifactId>
         </dependency>
     </dependencies>
 

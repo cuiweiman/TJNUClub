@@ -14,6 +14,11 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+/**
+* @Author: WeiMan Cui
+* @Date: 2019/12/2 17:57
+* @Description: 数据库连接池
+*/
 @Configuration
 public class DataSourceConfig {
 

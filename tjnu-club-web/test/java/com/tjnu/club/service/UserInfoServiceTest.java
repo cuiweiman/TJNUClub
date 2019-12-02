@@ -18,10 +18,4 @@ public class UserInfoServiceTest extends TJNUClubTest {
     @Resource
     private UserInfoService userInfoService;
 
-    @Test
-    public void listUserInfo() {
-        List<UserInfo> list = userInfoService.listUserInfo(1,1);
-
-        System.out.println(JSON.toJSON(list));
-    }
 }
