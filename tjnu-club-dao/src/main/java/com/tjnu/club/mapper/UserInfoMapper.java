@@ -15,11 +15,11 @@ public interface UserInfoMapper {
 
     Integer deleteUserInfo(@Param("userId") String userId);
 
-    UserInfo getUserInfoByUserId(String userId);
+    UserInfo getUserInfoByUserId(@Param("userId") String userId);
 
-    UserInfo getUserInfoByNickName(String nickName);
+    UserInfo getUserInfoByNickName(@Param("nickName") String nickName);
 
-    UserInfo getUserInfoByEmail(String email);
+    UserInfo getUserInfoByEmail(@Param("email") String email);
 
 
     List<UserInfo> listUserInfo();

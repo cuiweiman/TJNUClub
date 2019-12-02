@@ -27,6 +27,101 @@
         college,university,last_login_time,login_times,description,is_deleted
     </sql>
 
+    <insert id="saveUserInfo">
+        INSERT INTO user_info
+        <set>
+            user_id = #{userId},
+            user_img = #{userImg},
+            user_name = #{userName},
+            nick_name = #{nickName},
+            password = #{password},
+            email = #{email},
+            status = #{status},
+            grade = #{grade},
+            major = #{major},
+            college = #{college},
+            university = #{university},
+            last_login_time = #{lastLoginTime},
+            login_times = #{loginTimes},
+            description = #{description},
+            is_deleted = 0
+        </set>
+    </insert>
+
+    <update id="updateUserInfo">
+        UPDATE user_info
+        <set>
+            <if test = "userImg!=null">
+                user_img = #{userImg},
+            </if>
+            <if test = "userName!=null">
+                user_name = #{userName},
+            </if>
+            <if test = "nickName!=null">
+                nick_name = #{nickName},
+            </if>
+            <if test = "password!=null">
+                password = #{password},
+            </if>
+            <if test = "email!=null">
+                email = #{email},
+            </if>
+            <if test = "status!=null">
+                status = #{status},
+            </if>
+            <if test = "grade!=null">
+                grade = #{grade},
+            </if>
+            <if test = "major!=null">
+                major = #{major},
+            </if>
+            <if test = "college!=null">
+                college = #{college},
+            </if>
+            <if test = "university!=null">
+                university = #{university},
+            </if>
+            <if test = "lastLoginTime!=null">
+                last_login_time = #{lastLoginTime},
+            </if>
+            <if test = "loginTimes!=null">
+                login_times = #{loginTimes},
+            </if>
+            <if test = "description!=null">
+                description = #{description},
+            </if>
+            gmt_modified = now()
+        </set>
+        WHERE user_id = #{userId} AND is_deleted = 0
+    </update>
+
+    <update id="deleteUserInfo">
+        UPDATE user_info
+        <set>
+            is_deleted = UNIX_TIMESTAMP(),
+            gmt_modified = now()
+        </set>
+        WHERE user_id = #{userId} AND is_deleted = 0
+    </update>
+
+    <select id="getUserInfoByUserId" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumn" />
+        FROM user_info
+        WHERE is_deleted = 0 AND user_id = #{userId}
+    </select>
+
+    <select id="getUserInfoByNickName" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumn" />
+        FROM user_info
+        WHERE is_deleted = 0 AND nick_name = #{nickName}
+    </select>
+
+    <select id="getUserInfoByEmail" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumn" />
+        FROM user_info
+        WHERE is_deleted = 0 AND email = #{email}
+    </select>
+
     <select id="listUserInfo" resultMap="BaseResultMap">
         SELECT <include refid="BaseColumn" />
         FROM user_info

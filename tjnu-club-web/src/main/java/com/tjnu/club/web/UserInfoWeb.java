@@ -87,7 +87,7 @@ public class UserInfoWeb extends TJNUWeb {
     }
 
     @PostMapping("/list")
-    public ResultVO<PageInfoVO> getUserInfoByUserId(Integer page, Integer size) {
+    public ResultVO<PageInfoVO> listUserInfo(Integer page, Integer size) {
         super.checkPage(page,size);
         try {
             List<UserInfo> list = userInfoService.listUserInfo(page,size);
@@ -119,7 +119,7 @@ public class UserInfoWeb extends TJNUWeb {
 
     private UserInfoVO info2Vo(UserInfo info) {
         UserInfoVO vo = new UserInfoVO();
-        BeanUtils.copyProperties(vo, info);
+        BeanUtils.copyProperties(info, vo);
         if (info.getGmtCreate() != null) {
             vo.setGmtCreate(info.getGmtCreate().getTime());
         }
