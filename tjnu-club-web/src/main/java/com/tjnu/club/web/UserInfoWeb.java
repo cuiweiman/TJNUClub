@@ -4,6 +4,7 @@ import com.tjnu.club.constants.TJNUConstants;
 import com.tjnu.club.exceptions.TJNUException;
 import com.tjnu.club.info.UserInfo;
 import com.tjnu.club.service.UserInfoService;
+import com.tjnu.club.utils.PageInfoUtil;
 import com.tjnu.club.vo.PageInfoVO;
 import com.tjnu.club.vo.ResultVO;
 import com.tjnu.club.vo.UserInfoVO;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -26,7 +26,7 @@ public class UserInfoWeb extends TJNUWeb {
     @Resource
     private UserInfoService userInfoService;
 
-    @PostMapping("/register")
+    @PostMapping("/save")
     public ResultVO<Boolean> saveUserInfo(UserInfoVO userInfoVO) {
         checkParam(userInfoVO);
         try {
@@ -91,8 +91,8 @@ public class UserInfoWeb extends TJNUWeb {
         super.checkPage(page,size);
         try {
             List<UserInfo> list = userInfoService.listUserInfo(page,size);
-            List<UserInfoVO> vos = list.stream().map(item->info2Vo(item)).collect(Collectors.toList());
-            PageInfoVO<UserInfoVO> pageInfoVO = new PageInfoVO<>(vos);
+            PageInfoVO<UserInfo> pageInfo = new PageInfoVO<>(list);
+            PageInfoVO<UserInfoVO> pageInfoVO = PageInfoUtil.pageInfo2VO(pageInfo,UserInfoVO.class);
             return new ResultVO<>(pageInfoVO);
         } catch (TJNUException e) {
             log.error(e.getMsg(), e);

@@ -36,7 +36,7 @@
             nick_name = #{nickName},
             password = #{password},
             email = #{email},
-            status = #{status},
+            status = 0,
             grade = #{grade},
             major = #{major},
             college = #{college},
@@ -113,13 +113,13 @@
     <select id="getUserInfoByNickName" resultMap="BaseResultMap">
         SELECT <include refid="BaseColumn" />
         FROM user_info
-        WHERE is_deleted = 0 AND nick_name = #{nickName}
+        WHERE is_deleted = 0 AND nick_name = #{nickName} AND user_id != #{userId}
     </select>
 
     <select id="getUserInfoByEmail" resultMap="BaseResultMap">
         SELECT <include refid="BaseColumn" />
         FROM user_info
-        WHERE is_deleted = 0 AND email = #{email}
+        WHERE is_deleted = 0 AND email = #{email} AND user_id != #{userId}
     </select>
 
     <select id="listUserInfo" resultMap="BaseResultMap">

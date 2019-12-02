@@ -17,9 +17,9 @@ public interface UserInfoMapper {
 
     UserInfo getUserInfoByUserId(@Param("userId") String userId);
 
-    UserInfo getUserInfoByNickName(@Param("nickName") String nickName);
+    UserInfo getUserInfoByNickName(@Param("userId") String userId, @Param("nickName") String nickName);
 
-    UserInfo getUserInfoByEmail(@Param("email") String email);
+    UserInfo getUserInfoByEmail(@Param("userId") String userId, @Param("email") String email);
 
 
     List<UserInfo> listUserInfo();

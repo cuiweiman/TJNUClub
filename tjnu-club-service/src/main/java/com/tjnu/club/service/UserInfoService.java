@@ -48,14 +48,14 @@ public interface UserInfoService {
      * @param nickName
      * @return
      */
-    UserInfo getUserInfoByNickName(String nickName);
+    UserInfo getUserInfoByNickName(String userId,String nickName);
 
     /**
      * 根据邮箱查询用户信息
      * @param email
      * @return
      */
-    UserInfo getUserInfoByEmail(String email);
+    UserInfo getUserInfoByEmail(String userId,String email);
 
     /**
      * 查询用户信息列表

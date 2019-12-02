@@ -1,5 +1,6 @@
 package com.tjnu.club.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.tjnu.club.constants.TJNUConstants;
 import com.tjnu.club.exceptions.TJNUException;
 import com.tjnu.club.info.UserInfo;
@@ -32,16 +33,17 @@ public class UserInfoServiceImpl implements UserInfoService {
             }
             flag = Boolean.FALSE;
         }
+        userInfo.setUserId(userId);
 
         // nickName校验重复
-        UserInfo query2 = getUserInfoByNickName(userInfo.getNickName());
+        UserInfo query2 = getUserInfoByNickName(userInfo.getUserId(), userInfo.getNickName());
         if (!ObjectUtils.isEmpty(query2)) {
             throw new TJNUException(TJNUConstants.NICK_NAME_REPEAT);
         }
 
         //email校验重复
-        UserInfo query3 = getUserInfoByEmail(userInfo.getEmail());
-        if (!ObjectUtils.isEmpty(query2)) {
+        UserInfo query3 = getUserInfoByEmail(userInfo.getUserId(), userInfo.getEmail());
+        if (!ObjectUtils.isEmpty(query3)) {
             throw new TJNUException(TJNUConstants.EMAIL_REPEAT);
         }
         Integer result = userInfoMapper.saveUserInfo(userInfo);
@@ -61,9 +63,15 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
 
         // nickName校验重复
-        UserInfo query2 = getUserInfoByNickName(userInfo.getNickName());
+        UserInfo query2 = getUserInfoByNickName(userInfo.getUserId(), userInfo.getNickName());
         if (!ObjectUtils.isEmpty(query2)) {
             throw new TJNUException(TJNUConstants.NICK_NAME_REPEAT);
+        }
+
+        //email校验重复
+        UserInfo query3 = getUserInfoByEmail(userInfo.getUserId(), userInfo.getEmail());
+        if (!ObjectUtils.isEmpty(query3)) {
+            throw new TJNUException(TJNUConstants.EMAIL_REPEAT);
         }
 
         Integer result = userInfoMapper.updateUserInfo(userInfo);
@@ -95,20 +103,22 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public UserInfo getUserInfoByNickName(String nickName) {
-        UserInfo info = userInfoMapper.getUserInfoByNickName(nickName);
+    public UserInfo getUserInfoByNickName(String userId, String nickName) {
+        UserInfo info = userInfoMapper.getUserInfoByNickName(userId, nickName);
         return info;
     }
 
     @Override
-    public UserInfo getUserInfoByEmail(String email) {
-        UserInfo info = userInfoMapper.getUserInfoByEmail(email);
+    public UserInfo getUserInfoByEmail(String userId, String email) {
+        UserInfo info = userInfoMapper.getUserInfoByEmail(userId, email);
         return info;
     }
 
     @Override
     public List<UserInfo> listUserInfo(Integer page, Integer size) {
-        List<UserInfo> list = userInfoMapper.listUserInfo();
-        return list;
+        PageHelper.startPage(page,size);
+        return userInfoMapper.listUserInfo();
+        /*List<UserInfo> list = userInfoMapper.listUserInfo();
+        return list;*/
     }
 }
