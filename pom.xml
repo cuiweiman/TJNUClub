@@ -37,7 +37,6 @@
         <apache.commons-lang3>3.8.1</apache.commons-lang3>
         <lombok.version>1.18.4</lombok.version>
         <hutool.version>5.0.3</hutool.version>
-        <pagehelper.version>1.2.3</pagehelper.version>
     </properties>
 
     <dependencyManagement>
@@ -86,13 +85,6 @@
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${mybatis.version}</version>
-            </dependency>
-
-            <!--pagehelper-->
-            <dependency>
-                <groupId>com.github.pagehelper</groupId>
-                <artifactId>pagehelper-spring-boot-starter</artifactId>
-                <version>${pagehelper.version}</version>
             </dependency>
 
             <!-- mysql-connector-java -->

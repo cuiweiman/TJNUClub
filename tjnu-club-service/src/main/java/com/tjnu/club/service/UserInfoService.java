@@ -3,6 +3,7 @@ package com.tjnu.club.service;
 import com.tjnu.club.info.UserInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: WeiMan Cui
@@ -64,7 +65,7 @@ public interface UserInfoService {
      * @param size
      * @return
      */
-    List<UserInfo> listUserInfo(Integer page, Integer size);
+    Map<String,Object> listUserInfo(Integer page, Integer size);
 
 
 }

@@ -1,6 +1,5 @@
 package com.tjnu.club.service.impl;
 
-import com.github.pagehelper.PageHelper;
 import com.tjnu.club.constants.TJNUConstants;
 import com.tjnu.club.exceptions.TJNUException;
 import com.tjnu.club.info.UserInfo;
@@ -12,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class UserInfoServiceImpl implements UserInfoService {
@@ -115,10 +114,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public List<UserInfo> listUserInfo(Integer page, Integer size) {
-        PageHelper.startPage(page,size);
-        return userInfoMapper.listUserInfo();
-        /*List<UserInfo> list = userInfoMapper.listUserInfo();
-        return list;*/
+    public Map<String,Object> listUserInfo(Integer page, Integer size) {
+        Map<String,Object> map = new HashMap<>();
+        Long count = Optional.ofNullable(userInfoMapper.countUserInfo()).orElse(0L);
+        List<UserInfo> list = Optional.ofNullable(userInfoMapper.listUserInfo(page,size)).orElse(new ArrayList<>());
+        map.put("count",count);
+        map.put("data",list);
+        return map;
     }
 }

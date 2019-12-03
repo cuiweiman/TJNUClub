@@ -1,21 +1,24 @@
 package com.tjnu.club.web;
 
+import cn.hutool.core.util.StrUtil;
 import com.tjnu.club.constants.TJNUConstants;
 import com.tjnu.club.exceptions.TJNUException;
 import com.tjnu.club.info.UserInfo;
 import com.tjnu.club.service.UserInfoService;
-import com.tjnu.club.utils.PageInfoUtil;
 import com.tjnu.club.vo.PageInfoVO;
 import com.tjnu.club.vo.ResultVO;
 import com.tjnu.club.vo.UserInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -44,7 +47,7 @@ public class UserInfoWeb extends TJNUWeb {
     @PostMapping("/update")
     public ResultVO<Boolean> updateUserInfo(UserInfoVO userInfoVO) {
         checkParam(userInfoVO);
-        super.notNull("用户ID",userInfoVO.getUserId());
+        super.notNull("用户ID", userInfoVO.getUserId());
         try {
             UserInfo userInfo = vo2Info(userInfoVO);
             Boolean result = userInfoService.updateUserInfo(userInfo);
@@ -59,7 +62,7 @@ public class UserInfoWeb extends TJNUWeb {
 
     @PostMapping("/delete")
     public ResultVO<Boolean> deleteUserInfo(String userId) {
-        super.notNull("用户ID",userId);
+        super.notNull("用户ID", userId);
         try {
             Boolean result = userInfoService.deleteUserInfo(userId);
             return new ResultVO<>(result);
@@ -73,7 +76,7 @@ public class UserInfoWeb extends TJNUWeb {
 
     @PostMapping("/get")
     public ResultVO<UserInfoVO> getUserInfoByUserId(String userId) {
-        super.notNull("用户ID",userId);
+        super.notNull("用户ID", userId);
         try {
             UserInfo info = userInfoService.getUserInfoByUserId(userId);
             UserInfoVO vo = info2Vo(info);
@@ -88,11 +91,17 @@ public class UserInfoWeb extends TJNUWeb {
 
     @PostMapping("/list")
     public ResultVO<PageInfoVO> listUserInfo(Integer page, Integer size) {
-        super.checkPage(page,size);
+        super.checkPage(page, size);
         try {
-            List<UserInfo> list = userInfoService.listUserInfo(page,size);
-            PageInfoVO<UserInfo> pageInfo = new PageInfoVO<>(list);
-            PageInfoVO<UserInfoVO> pageInfoVO = PageInfoUtil.pageInfo2VO(pageInfo,UserInfoVO.class);
+            Integer currentPage = (page - 1) * size;
+            Map<String, Object> map = userInfoService.listUserInfo(currentPage, size);
+            Long count = (Long) map.get("count");
+            List<UserInfo> infoList = (List<UserInfo>) map.get("data");
+            if (count == 0L || infoList.size() == 0) {
+                return new ResultVO<>(new PageInfoVO());
+            }
+            List<UserInfoVO> vos = infoList.stream().map(item -> info2Vo(item)).collect(Collectors.toList());
+            PageInfoVO<UserInfoVO> pageInfoVO = new PageInfoVO<>(count, vos);
             return new ResultVO<>(pageInfoVO);
         } catch (TJNUException e) {
             log.error(e.getMsg(), e);
@@ -118,6 +127,9 @@ public class UserInfoWeb extends TJNUWeb {
     }
 
     private UserInfoVO info2Vo(UserInfo info) {
+        if (ObjectUtils.isEmpty(info) || StrUtil.isEmpty(info.getUserId())) {
+            return null;
+        }
         UserInfoVO vo = new UserInfoVO();
         BeanUtils.copyProperties(info, vo);
         if (info.getGmtCreate() != null) {

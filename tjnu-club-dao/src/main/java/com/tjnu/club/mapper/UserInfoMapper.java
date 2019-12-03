@@ -21,8 +21,9 @@ public interface UserInfoMapper {
 
     UserInfo getUserInfoByEmail(@Param("userId") String userId, @Param("email") String email);
 
+    Long countUserInfo();
 
-    List<UserInfo> listUserInfo();
+    List<UserInfo> listUserInfo(@Param("page") Integer page, @Param("size") Integer size);
 
 
 }

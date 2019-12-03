@@ -15,7 +15,7 @@ public class UserInfoMapperTest extends TJNUClubTest {
 
     @Test
     public void listUserInfo() {
-        List<UserInfo> userInfoList = userInfoMapper.listUserInfo();
+        List<UserInfo> userInfoList = userInfoMapper.listUserInfo(1,1);
         System.out.println(JSON.toJSON(userInfoList));
     }
 }

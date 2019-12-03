@@ -122,10 +122,17 @@
         WHERE is_deleted = 0 AND email = #{email} AND user_id != #{userId}
     </select>
 
+    <select id="countUserInfo" resultType="java.lang.Long">
+        SELECT COUNT(user_id)
+        FROM user_info
+        WHERE is_deleted = 0
+    </select>
+
     <select id="listUserInfo" resultMap="BaseResultMap">
         SELECT <include refid="BaseColumn" />
         FROM user_info
         WHERE is_deleted = 0
+        LIMIT #{page},#{size}
     </select>
 
 
