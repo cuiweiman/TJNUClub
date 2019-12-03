@@ -56,4 +56,10 @@ public class UserInfoVO implements Serializable {
     //个人介绍、说明
     private String description;
 
+    //登录令牌，有效期2小时
+    private String token;
+
+    //邮箱验证码
+    private String code;
+
 }

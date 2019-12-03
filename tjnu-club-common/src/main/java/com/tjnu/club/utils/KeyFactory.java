@@ -12,6 +12,7 @@ import java.util.Random;
 public class KeyFactory {
 
     public static final String number = "123456789";
+    public static final Integer DEFAULT_LENGTH = 6;
 
 
     /**
@@ -19,6 +20,11 @@ public class KeyFactory {
      *
      * @return
      */
+    public static String genRandomNumber() {
+        return genRandomNumber(DEFAULT_LENGTH);
+    }
+
+
     public static String genRandomNumber(Integer length) {
         Random random = new Random();
         StringBuffer buf = new StringBuffer();
