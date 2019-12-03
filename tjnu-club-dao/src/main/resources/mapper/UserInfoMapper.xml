@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tjnu.club.mapper.UserInfoMapper">
+    <resultMap id="BaseResultMap" type="com.tjnu.club.info.UserInfo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="user_img" jdbcType="VARCHAR" property="userImg"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="grade" jdbcType="VARCHAR" property="grade"/>
+        <result column="major" jdbcType="VARCHAR" property="major"/>
+        <result column="college" jdbcType="VARCHAR" property="college"/>
+        <result column="university" jdbcType="VARCHAR" property="university"/>
+        <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime"/>
+        <result column="login_times" jdbcType="BIGINT" property="loginTimes"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="is_deleted" jdbcType="BIGINT" property="isDeleted"/>
+    </resultMap>
+
+    <sql id="BaseColumn">
+        id,gmt_create,gmt_modified,user_id,user_img,user_name,nick_name,password,email,status,grade,major,
+        college,university,last_login_time,login_times,description,is_deleted
+    </sql>
+
+    <insert id="saveUserInfo">
+        INSERT INTO user_info
+        <set>
+            user_id = #{userId},
+            user_img = #{userImg},
+            user_name = #{userName},
+            nick_name = #{nickName},
+            password = #{password},
+            email = #{email},
+            status = 0,
+            grade = #{grade},
+            major = #{major},
+            college = #{college},
+            university = #{university},
+            last_login_time = #{lastLoginTime},
+            login_times = #{loginTimes},
+            description = #{description},
+            is_deleted = 0
+        </set>
+    </insert>
+
+    <update id="updateUserInfo">
+        UPDATE user_info
+        <set>
+            <if test = "userImg!=null">
+                user_img = #{userImg},
+            </if>
+            <if test = "userName!=null">
+                user_name = #{userName},
+            </if>
+            <if test = "nickName!=null">
+                nick_name = #{nickName},
+            </if>
+            <if test = "password!=null">
+                password = #{password},
+            </if>
+            <if test = "email!=null">
+                email = #{email},
+            </if>
+            <if test = "status!=null">
+                status = #{status},
+            </if>
+            <if test = "grade!=null">
+                grade = #{grade},
+            </if>
+            <if test = "major!=null">
+                major = #{major},
+            </if>
+            <if test = "college!=null">
+                college = #{college},
+            </if>
+            <if test = "university!=null">
+                university = #{university},
+            </if>
+            <if test = "lastLoginTime!=null">
+                last_login_time = #{lastLoginTime},
+            </if>
+            <if test = "loginTimes!=null">
+                login_times = #{loginTimes},
+            </if>
+            <if test = "description!=null">
+                description = #{description},
+            </if>
+            gmt_modified = now()
+        </set>
+        WHERE user_id = #{userId} AND is_deleted = 0
+    </update>
+
+    <update id="deleteUserInfo">
+        UPDATE user_info
+        <set>
+            is_deleted = UNIX_TIMESTAMP(),
+            gmt_modified = now()
+        </set>
+        WHERE user_id = #{userId} AND is_deleted = 0
+    </update>
+
+    <select id="getUserInfoByUserId" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumn" />
+        FROM user_info
+        WHERE is_deleted = 0 AND user_id = #{userId}
+    </select>
+
+    <select id="getUserInfoByNickName" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumn" />
+        FROM user_info
+        WHERE is_deleted = 0 AND nick_name = #{nickName} AND user_id != #{userId}
+    </select>
+
+    <select id="getUserInfoByEmail" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumn" />
+        FROM user_info
+        WHERE is_deleted = 0 AND email = #{email} AND user_id != #{userId}
+    </select>
+
+    <select id="countUserInfo" resultType="java.lang.Long">
+        SELECT COUNT(user_id)
+        FROM user_info
+        WHERE is_deleted = 0
+    </select>
+
+    <select id="listUserInfo" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumn" />
+        FROM user_info
+        WHERE is_deleted = 0
+        LIMIT #{page},#{size}
+    </select>
+
+
+</mapper>
