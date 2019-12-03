@@ -67,5 +67,6 @@ public interface UserInfoService {
      */
     Map<String,Object> listUserInfo(Integer page, Integer size);
 
+    UserInfo getUserInfoByNickNameOrEmail(String nickNameOrEmail);
 
 }

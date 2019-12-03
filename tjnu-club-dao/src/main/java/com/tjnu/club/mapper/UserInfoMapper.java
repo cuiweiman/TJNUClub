@@ -25,5 +25,6 @@ public interface UserInfoMapper {
 
     List<UserInfo> listUserInfo(@Param("page") Integer page, @Param("size") Integer size);
 
+    UserInfo getUserInfoByNickNameOrEmail(@Param("nickNameOrEmail") String nickNameOrEmail);
 
 }

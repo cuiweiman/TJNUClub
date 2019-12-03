@@ -3,6 +3,7 @@ package com.tjnu.club.utils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * @Author: WeiMan Cui
@@ -35,6 +36,13 @@ public class KeyFactory {
         return buf.toString();
     }
 
+    /**
+     * 生成 TOKEN
+     * @return
+     */
+    public static String genToken(){
+        return UUID.randomUUID().toString().replace("-","");
+    }
 
     /**
      * 时间戳 + 2个随机数字

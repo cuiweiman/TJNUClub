@@ -61,4 +61,7 @@ public class UserInfo implements Serializable {
     //逻辑删除，0-正常，时间戳-被删除
     private Long isDeleted;
 
+    //登录令牌，有效期2小时
+    private String token;
+
 }

@@ -1,4 +1,4 @@
-package com.tjnu.club.web;
+package com.tjnu.club.global;
 
 import cn.hutool.core.util.StrUtil;
 import com.tjnu.club.constants.TJNUConstants;

@@ -7,7 +7,6 @@ import java.io.Serializable;
 @Data
 public class UserInfoVO implements Serializable {
 
-
     //创建时间
     private Long gmtCreate;
 

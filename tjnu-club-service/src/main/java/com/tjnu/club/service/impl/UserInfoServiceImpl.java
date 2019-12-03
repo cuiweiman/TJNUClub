@@ -122,4 +122,10 @@ public class UserInfoServiceImpl implements UserInfoService {
         map.put("data",list);
         return map;
     }
+
+    @Override
+    public UserInfo getUserInfoByNickNameOrEmail(String nickNameOrEmail) {
+        UserInfo info = userInfoMapper.getUserInfoByNickNameOrEmail(nickNameOrEmail);
+        return info;
+    }
 }
