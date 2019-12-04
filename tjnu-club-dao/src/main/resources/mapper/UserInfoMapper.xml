@@ -135,5 +135,10 @@
         LIMIT #{page},#{size}
     </select>
 
+    <select id="getUserInfoByNickNameOrEmail" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumn" />
+        FROM user_info
+        WHERE is_deleted = 0 AND ( nick_name = #{nickNameOrEmail} OR email = #{nickNameOrEmail} )
+    </select>
 
 </mapper>

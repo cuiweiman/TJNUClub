@@ -1,125 +1,70 @@
 package com.tjnu.club.service.impl;
 
+import com.tjnu.club.api.UserInfoService;
+import com.tjnu.club.component.UserInfoComponent;
 import com.tjnu.club.constants.TJNUConstants;
+import com.tjnu.club.constants.TJNUService;
 import com.tjnu.club.exceptions.TJNUException;
 import com.tjnu.club.info.UserInfo;
-import com.tjnu.club.mapper.UserInfoMapper;
-import com.tjnu.club.service.UserInfoService;
-import com.tjnu.club.utils.KeyFactory;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
+import com.tjnu.club.vo.ResultVO;
+import com.tjnu.club.vo.UserInfoVO;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
 
-@Component
-public class UserInfoServiceImpl implements UserInfoService {
+@Slf4j
+@Service
+public class UserInfoServiceImpl extends TJNUService implements UserInfoService {
 
     @Resource
-    private UserInfoMapper userInfoMapper;
+    private UserInfoComponent userInfoComponent;
 
-    @Transactional
     @Override
-    public Boolean saveUserInfo(UserInfo userInfo) {
-        // userId校验
-        String userId = KeyFactory.genDefaultSerialNo();
-        Boolean flag = Boolean.TRUE;
-        while (flag) {
-            UserInfo query = getUserInfoByUserId(userId);
-            if (!ObjectUtils.isEmpty(query)) {
-                userId = KeyFactory.genDefaultSerialNo();
-            }
-            flag = Boolean.FALSE;
+    public ResultVO<Boolean> updateUserInfo(UserInfoVO userInfoVO) {
+        checkParam(userInfoVO);
+        super.notBlank("用户ID", userInfoVO.getUserId());
+        try {
+            UserInfo userInfo = vo2Info(userInfoVO);
+            Boolean result = userInfoComponent.updateUserInfo(userInfo);
+            return new ResultVO<>(result);
+        } catch (TJNUException e) {
+            log.error(e.getMsg(), e);
+            return new ResultVO<>(e.getCode(), e.getMsg(), Boolean.FALSE);
+        } catch (Exception e) {
+            return new ResultVO<>(TJNUConstants.SYSTEM_ERROR.getCode(), TJNUConstants.SYSTEM_ERROR.getMsg(), Boolean.FALSE);
         }
-        userInfo.setUserId(userId);
-
-        // nickName校验重复
-        UserInfo query2 = getUserInfoByNickName(userInfo.getUserId(), userInfo.getNickName());
-        if (!ObjectUtils.isEmpty(query2)) {
-            throw new TJNUException(TJNUConstants.NICK_NAME_REPEAT);
-        }
-
-        //email校验重复
-        UserInfo query3 = getUserInfoByEmail(userInfo.getUserId(), userInfo.getEmail());
-        if (!ObjectUtils.isEmpty(query3)) {
-            throw new TJNUException(TJNUConstants.EMAIL_REPEAT);
-        }
-        Integer result = userInfoMapper.saveUserInfo(userInfo);
-        if (result != 1) {
-            throw new TJNUException(TJNUConstants.SAVE_USER_ERROR);
-        }
-        return Boolean.TRUE;
-    }
-
-    @Transactional
-    @Override
-    public Boolean updateUserInfo(UserInfo userInfo) {
-        //用户是否存在
-        UserInfo query = getUserInfoByUserId(userInfo.getUserId());
-        if (ObjectUtils.isEmpty(query)) {
-            throw new TJNUException(TJNUConstants.USER_NOT_EXISTS);
-        }
-
-        // nickName校验重复
-        UserInfo query2 = getUserInfoByNickName(userInfo.getUserId(), userInfo.getNickName());
-        if (!ObjectUtils.isEmpty(query2)) {
-            throw new TJNUException(TJNUConstants.NICK_NAME_REPEAT);
-        }
-
-        //email校验重复
-        UserInfo query3 = getUserInfoByEmail(userInfo.getUserId(), userInfo.getEmail());
-        if (!ObjectUtils.isEmpty(query3)) {
-            throw new TJNUException(TJNUConstants.EMAIL_REPEAT);
-        }
-
-        Integer result = userInfoMapper.updateUserInfo(userInfo);
-        if (result != 1) {
-            throw new TJNUException(TJNUConstants.UPDATE_USER_ERROR);
-        }
-        return Boolean.TRUE;
-    }
-
-    @Transactional
-    @Override
-    public Boolean deleteUserInfo(String userId) {
-        //用户是否存在
-        UserInfo query = getUserInfoByUserId(userId);
-        if (ObjectUtils.isEmpty(query)) {
-            throw new TJNUException(TJNUConstants.USER_NOT_EXISTS);
-        }
-        Integer result = userInfoMapper.deleteUserInfo(userId);
-        if (result != 1) {
-            throw new TJNUException(TJNUConstants.DELETE_USER_ERROR);
-        }
-        return Boolean.TRUE;
     }
 
     @Override
-    public UserInfo getUserInfoByUserId(String userId) {
-        UserInfo info = userInfoMapper.getUserInfoByUserId(userId);
+    public ResultVO<Boolean> deleteUserInfo(String userId) {
+        super.notBlank("用户ID", userId);
+        try {
+            Boolean result = userInfoComponent.deleteUserInfo(userId);
+            return new ResultVO<>(result);
+        } catch (TJNUException e) {
+            log.error(e.getMsg(), e);
+            return new ResultVO<>(e.getCode(), e.getMsg(), Boolean.FALSE);
+        } catch (Exception e) {
+            return new ResultVO<>(TJNUConstants.SYSTEM_ERROR.getCode(), TJNUConstants.SYSTEM_ERROR.getMsg(), Boolean.FALSE);
+        }
+    }
+
+
+    //参数校验
+    private void checkParam(UserInfoVO userInfoVO) {
+        super.notNull("用户信息", userInfoVO).notBlank("昵称", userInfoVO.getNickName())
+                .notBlank("邮箱", userInfoVO.getEmail()).notBlank("密码", userInfoVO.getPassword())
+                .notBlank("专业", userInfoVO.getMajor()).notBlank("学院", userInfoVO.getCollege())
+                .notBlank("学校", userInfoVO.getUniversity()).notBlank("年级", userInfoVO.getGrade());
+    }
+
+    //vo 转 info
+    private UserInfo vo2Info(UserInfoVO vo) {
+        UserInfo info = new UserInfo();
+        BeanUtils.copyProperties(vo, info);
         return info;
     }
 
-    @Override
-    public UserInfo getUserInfoByNickName(String userId, String nickName) {
-        UserInfo info = userInfoMapper.getUserInfoByNickName(userId, nickName);
-        return info;
-    }
-
-    @Override
-    public UserInfo getUserInfoByEmail(String userId, String email) {
-        UserInfo info = userInfoMapper.getUserInfoByEmail(userId, email);
-        return info;
-    }
-
-    @Override
-    public Map<String,Object> listUserInfo(Integer page, Integer size) {
-        Map<String,Object> map = new HashMap<>();
-        Long count = Optional.ofNullable(userInfoMapper.countUserInfo()).orElse(0L);
-        List<UserInfo> list = Optional.ofNullable(userInfoMapper.listUserInfo(page,size)).orElse(new ArrayList<>());
-        map.put("count",count);
-        map.put("data",list);
-        return map;
-    }
 }

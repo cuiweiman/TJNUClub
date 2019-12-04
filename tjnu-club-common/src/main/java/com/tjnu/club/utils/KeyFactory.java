@@ -3,6 +3,7 @@ package com.tjnu.club.utils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * @Author: WeiMan Cui
@@ -12,6 +13,7 @@ import java.util.Random;
 public class KeyFactory {
 
     public static final String number = "123456789";
+    public static final Integer DEFAULT_LENGTH = 6;
 
 
     /**
@@ -19,6 +21,11 @@ public class KeyFactory {
      *
      * @return
      */
+    public static String genRandomNumber() {
+        return genRandomNumber(DEFAULT_LENGTH);
+    }
+
+
     public static String genRandomNumber(Integer length) {
         Random random = new Random();
         StringBuffer buf = new StringBuffer();
@@ -29,6 +36,13 @@ public class KeyFactory {
         return buf.toString();
     }
 
+    /**
+     * 生成 TOKEN
+     * @return
+     */
+    public static String genToken(){
+        return UUID.randomUUID().toString().replace("-","");
+    }
 
     /**
      * 时间戳 + 2个随机数字

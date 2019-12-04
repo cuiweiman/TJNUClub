@@ -1,20 +1,17 @@
-package com.tjnu.club.info;
+package com.tjnu.club.vo;
 
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Data
-public class UserInfo implements Serializable {
-
-    private Long id;
+public class UserInfoVO implements Serializable {
 
     //创建时间
-    private Date gmtCreate;
+    private Long gmtCreate;
 
     //修改时间
-    private Date gmtModified;
+    private Long gmtModified;
 
     //用户标识符
     private String userId;
@@ -50,7 +47,7 @@ public class UserInfo implements Serializable {
     private String university;
 
     //最后一次登陆时间
-    private Date lastLoginTime;
+    private Long lastLoginTime;
 
     //登陆次数
     private Long loginTimes;
@@ -58,10 +55,10 @@ public class UserInfo implements Serializable {
     //个人介绍、说明
     private String description;
 
-    //逻辑删除，0-正常，时间戳-被删除
-    private Long isDeleted;
-
     //登录令牌，有效期2小时
     private String token;
+
+    //邮箱验证码
+    private String code;
 
 }
