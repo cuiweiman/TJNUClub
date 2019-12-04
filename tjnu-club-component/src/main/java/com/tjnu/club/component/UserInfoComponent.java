@@ -9,7 +9,7 @@ import java.util.Map;
  * @Date: 2019/12/2 15:28
  * @Description: 用户信息
  */
-public interface UserInfoService {
+public interface UserInfoComponent {
 
     /**
      * 保存用户信息

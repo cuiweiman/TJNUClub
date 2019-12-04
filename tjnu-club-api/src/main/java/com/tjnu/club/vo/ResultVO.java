@@ -1,6 +1,7 @@
 package com.tjnu.club.vo;
 
 import com.tjnu.club.constants.TJNUCode;
+import com.tjnu.club.exceptions.TJNUException;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -30,6 +31,11 @@ public class ResultVO<T> implements Serializable {
         this.msg = tjnuCode.getMsg();
     }
 
+    public ResultVO(TJNUException e){
+        this.code = e.getCode();
+        this.msg = e.getMsg();
+    }
+
     public ResultVO(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
@@ -40,6 +46,5 @@ public class ResultVO<T> implements Serializable {
         this.msg = msg;
         this.data = data;
     }
-
 
 }

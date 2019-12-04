@@ -1,6 +1,6 @@
 package com.tjnu.club.component.impl;
 
-import com.tjnu.club.component.UserInfoService;
+import com.tjnu.club.component.UserInfoComponent;
 import com.tjnu.club.constants.TJNUConstants;
 import com.tjnu.club.exceptions.TJNUException;
 import com.tjnu.club.info.UserInfo;
@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 import java.util.*;
 
 @Service
-public class UserInfoServiceImpl implements UserInfoService {
+public class UserInfoComponentImpl implements UserInfoComponent {
 
     @Resource
     private UserInfoMapper userInfoMapper;

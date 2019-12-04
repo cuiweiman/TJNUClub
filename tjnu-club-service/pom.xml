@@ -20,7 +20,7 @@
 
         <dependency>
             <groupId>com.tjnu.club</groupId>
-            <artifactId>tjnu-club-dao</artifactId>
+            <artifactId>tjnu-club-component</artifactId>
         </dependency>
 
         <dependency>
@@ -32,6 +32,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web-services</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>

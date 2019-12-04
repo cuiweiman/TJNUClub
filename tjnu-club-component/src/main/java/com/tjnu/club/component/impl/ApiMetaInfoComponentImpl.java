@@ -1,6 +1,6 @@
 package com.tjnu.club.component.impl;
 
-import com.tjnu.club.component.ApiMetaInfoService;
+import com.tjnu.club.component.ApiMetaInfoComponent;
 import com.tjnu.club.constants.TJNUConstants;
 import com.tjnu.club.exceptions.TJNUException;
 import com.tjnu.club.info.ApiMetaInfo;
@@ -11,7 +11,7 @@ import org.springframework.util.ObjectUtils;
 import javax.annotation.Resource;
 
 @Service
-public class ApiMetaInfoServiceImpl implements ApiMetaInfoService {
+public class ApiMetaInfoComponentImpl implements ApiMetaInfoComponent {
 
     @Resource
     private ApiMetaInfoMapper apiMetaInfoMapper;

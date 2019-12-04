@@ -1,40 +1,33 @@
-package com.tjnu.club.web;
+package com.tjnu.club.service.impl;
 
+import com.tjnu.club.api.UserInfoService;
+import com.tjnu.club.component.UserInfoComponent;
 import com.tjnu.club.constants.TJNUConstants;
-import com.tjnu.club.constants.TJNUWeb;
+import com.tjnu.club.constants.TJNUService;
 import com.tjnu.club.exceptions.TJNUException;
 import com.tjnu.club.info.UserInfo;
-import com.tjnu.club.api.UserInfoService;
 import com.tjnu.club.vo.ResultVO;
 import com.tjnu.club.vo.UserInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-/**
- * @Author: WeiMan Cui
- * @Date: 2019/12/4 9:05
- * @Description: 用户信息管理
- */
 @Slf4j
-@RestController
-@RequestMapping("/user")
-public class UserInfoWeb extends TJNUWeb {
+@Service
+public class UserInfoServiceImpl extends TJNUService implements UserInfoService {
 
     @Resource
-    private UserInfoService userInfoService;
+    private UserInfoComponent userInfoComponent;
 
-    @PostMapping("/update")
-    public ResultVO<Boolean> updateUserInfo(String token, UserInfoVO userInfoVO) {
+    @Override
+    public ResultVO<Boolean> updateUserInfo(UserInfoVO userInfoVO) {
         checkParam(userInfoVO);
-        super.notNull("用户ID", userInfoVO.getUserId());
+        super.notBlank("用户ID", userInfoVO.getUserId());
         try {
             UserInfo userInfo = vo2Info(userInfoVO);
-            Boolean result = userInfoService.updateUserInfo(userInfo);
+            Boolean result = userInfoComponent.updateUserInfo(userInfo);
             return new ResultVO<>(result);
         } catch (TJNUException e) {
             log.error(e.getMsg(), e);
@@ -44,11 +37,11 @@ public class UserInfoWeb extends TJNUWeb {
         }
     }
 
-    @PostMapping("/delete")
-    public ResultVO<Boolean> deleteUserInfo(String token, String userId) {
-        super.notNull("用户ID", userId).notNull("token",token);
+    @Override
+    public ResultVO<Boolean> deleteUserInfo(String userId) {
+        super.notBlank("用户ID", userId);
         try {
-            Boolean result = userInfoService.deleteUserInfo(userId);
+            Boolean result = userInfoComponent.deleteUserInfo(userId);
             return new ResultVO<>(result);
         } catch (TJNUException e) {
             log.error(e.getMsg(), e);
@@ -57,6 +50,7 @@ public class UserInfoWeb extends TJNUWeb {
             return new ResultVO<>(TJNUConstants.SYSTEM_ERROR.getCode(), TJNUConstants.SYSTEM_ERROR.getMsg(), Boolean.FALSE);
         }
     }
+
 
     //参数校验
     private void checkParam(UserInfoVO userInfoVO) {
@@ -72,4 +66,5 @@ public class UserInfoWeb extends TJNUWeb {
         BeanUtils.copyProperties(vo, info);
         return info;
     }
+
 }

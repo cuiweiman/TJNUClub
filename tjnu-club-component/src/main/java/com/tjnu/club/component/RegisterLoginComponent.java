@@ -7,7 +7,7 @@ import com.tjnu.club.info.UserInfo;
  * @Date: 2019/12/4 9:10
  * @Description: 注册和登录信息
  */
-public interface RegisterLoginService {
+public interface RegisterLoginComponent {
 
     /**
      * 用户登录
@@ -30,10 +30,9 @@ public interface RegisterLoginService {
     /**
      * 用户登出
      *
-     * @param userId
      * @return
      */
-    Boolean logout(String token, String userId);
+    Boolean logout(String token);
 
     /**
      * 发送邮箱验证码

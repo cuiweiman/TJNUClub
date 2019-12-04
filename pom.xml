@@ -12,9 +12,9 @@
         <module>tjnu-club-main</module>
         <module>tjnu-club-api</module>
         <module>tjnu-club-service</module>
+        <module>tjnu-club-component</module>
         <module>tjnu-club-dao</module>
         <module>tjnu-club-common</module>
-        <module>tjnu-club-component</module>
     </modules>
 
     <name>TJNUClub</name>
@@ -60,6 +60,12 @@
             <dependency>
                 <groupId>com.tjnu.club</groupId>
                 <artifactId>tjnu-club-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tjnu.club</groupId>
+                <artifactId>tjnu-club-component</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

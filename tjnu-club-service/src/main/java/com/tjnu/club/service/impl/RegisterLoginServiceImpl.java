@@ -1,40 +1,33 @@
-package com.tjnu.club.web;
+package com.tjnu.club.service.impl;
 
 import cn.hutool.core.util.StrUtil;
+import com.tjnu.club.api.RegisterLoginService;
+import com.tjnu.club.component.RegisterLoginComponent;
 import com.tjnu.club.constants.TJNUConstants;
-import com.tjnu.club.constants.TJNUWeb;
+import com.tjnu.club.constants.TJNUService;
 import com.tjnu.club.exceptions.TJNUException;
 import com.tjnu.club.info.UserInfo;
-import com.tjnu.club.api.RegisterLoginService;
 import com.tjnu.club.vo.ResultVO;
 import com.tjnu.club.vo.UserInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
-/**
- * @Author: WeiMan Cui
- * @Date: 2019/12/3 10:03
- * @Description: 全局的接口
- */
 @Slf4j
-@RestController
-@RequestMapping("/global")
-public class RegisterLoginWeb extends TJNUWeb {
+@Service
+public class RegisterLoginServiceImpl extends TJNUService implements RegisterLoginService {
 
     @Resource
-    private RegisterLoginService registerLoginService;
+    private RegisterLoginComponent registerLoginComponent;
 
-    @PostMapping("/login")
+    @Override
     public ResultVO<UserInfoVO> login(String nickNameOrEmail, String password) {
         super.notNull("用户名/邮箱", nickNameOrEmail).notNull("密码", password);
         try {
-            UserInfo info = registerLoginService.login(nickNameOrEmail, password);
+            UserInfo info = registerLoginComponent.login(nickNameOrEmail, password);
             UserInfoVO vo = info2Vo(info);
             return new ResultVO<>(vo);
         } catch (TJNUException e) {
@@ -46,30 +39,28 @@ public class RegisterLoginWeb extends TJNUWeb {
         }
     }
 
-    @PostMapping("/register")
+    @Override
     public ResultVO<Boolean> register(UserInfoVO userInfoVO) {
         checkParam(userInfoVO);
         try {
             String code = userInfoVO.getCode();
             UserInfo info = vo2Info(userInfoVO);
-            Boolean result = registerLoginService.register(code, info);
+            Boolean result = registerLoginComponent.register(code, info);
             return new ResultVO<>(result);
         } catch (TJNUException e) {
             log.error(e.getMsg(), e);
             return new ResultVO<>(e.getCode(), e.getMsg(), Boolean.FALSE);
         } catch (Exception e) {
+            log.error(e.getMessage(),e);
             return new ResultVO<>(TJNUConstants.SYSTEM_ERROR.getCode(), TJNUConstants.SYSTEM_ERROR.getMsg(), Boolean.FALSE);
         }
     }
 
-    @PostMapping("/logout")
-    public ResultVO<Boolean> logout(String token, String userId) {
-        super.notBlank("用户ID", userId);
-        if (StrUtil.isEmpty(token)) { // TOKEN为空
-            throw new TJNUException(TJNUConstants.PARAM_ERROR);
-        }
+    @Override
+    public ResultVO<Boolean> logout(String token) {
+        super.notBlank("用户凭证",token);
         try {
-            Boolean result = registerLoginService.logout(token, userId);
+            Boolean result = registerLoginComponent.logout(token);
             return new ResultVO<>(result);
         } catch (TJNUException e) {
             log.error(e.getMsg(), e);
@@ -80,11 +71,11 @@ public class RegisterLoginWeb extends TJNUWeb {
         }
     }
 
-    @PostMapping("/email")
+    @Override
     public ResultVO<Boolean> emailVerify(String email) {
         super.notBlank("邮箱地址", email);
         try {
-            Boolean result = registerLoginService.emailVerify(email);
+            Boolean result = registerLoginComponent.emailVerify(email);
             return new ResultVO<>(result);
         } catch (TJNUException e) {
             log.error(e.getMsg(), e);
@@ -101,7 +92,7 @@ public class RegisterLoginWeb extends TJNUWeb {
                 .notBlank("邮箱", userInfoVO.getEmail()).notBlank("密码", userInfoVO.getPassword())
                 .notBlank("专业", userInfoVO.getMajor()).notBlank("学院", userInfoVO.getCollege())
                 .notBlank("学校", userInfoVO.getUniversity()).notBlank("年级", userInfoVO.getGrade())
-                .notNull("验证码", userInfoVO.getCode());
+                .notBlank("验证码", userInfoVO.getCode());
     }
 
     private UserInfo vo2Info(UserInfoVO vo) {
@@ -128,5 +119,4 @@ public class RegisterLoginWeb extends TJNUWeb {
         vo.setPassword(null);
         return vo;
     }
-
 }

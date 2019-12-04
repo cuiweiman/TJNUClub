@@ -16,25 +16,26 @@
         <dependency>
             <groupId>com.tjnu.club</groupId>
             <artifactId>tjnu-club-api</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.tjnu.club</groupId>
             <artifactId>tjnu-club-service</artifactId>
-            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tjnu.club</groupId>
+            <artifactId>tjnu-club-component</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.tjnu.club</groupId>
             <artifactId>tjnu-club-dao</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.tjnu.club</groupId>
             <artifactId>tjnu-club-common</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
         <dependency>

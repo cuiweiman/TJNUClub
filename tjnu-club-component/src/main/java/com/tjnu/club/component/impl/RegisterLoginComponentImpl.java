@@ -3,10 +3,9 @@ package com.tjnu.club.component.impl;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 
-import com.tjnu.club.component.RegisterLoginService;
-import com.tjnu.club.component.UserInfoService;
+import com.tjnu.club.component.RegisterLoginComponent;
+import com.tjnu.club.component.UserInfoComponent;
 import com.tjnu.club.constants.TJNUConstants;
 import com.tjnu.club.exceptions.TJNUException;
 import com.tjnu.club.info.UserInfo;
@@ -19,10 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.Optional;
 
 @Component
-public class RegisterLoginServiceImpl implements RegisterLoginService {
+public class RegisterLoginComponentImpl implements RegisterLoginComponent {
 
     @Resource
     private MailUtil mailUtill;
@@ -31,12 +29,12 @@ public class RegisterLoginServiceImpl implements RegisterLoginService {
     private RedisDao redisDao;
 
     @Resource
-    private UserInfoService userInfoService;
+    private UserInfoComponent userInfoComponent;
 
     @Transactional
     @Override
     public UserInfo login(String nickNameOrEmail, String password) {
-        UserInfo info = userInfoService.getUserInfoByNickNameOrEmail(nickNameOrEmail);
+        UserInfo info = userInfoComponent.getUserInfoByNickNameOrEmail(nickNameOrEmail);
         if (ObjectUtil.isEmpty(info) || StrUtil.isBlank(info.getUserId())) {
             throw new TJNUException(TJNUConstants.USER_NOT_EXISTS);
         }
@@ -58,7 +56,7 @@ public class RegisterLoginServiceImpl implements RegisterLoginService {
         //更新用户的最近登录时间和登录次数
         info.setLastLoginTime(new Date());
         info.setLoginTimes(info.getLoginTimes() + 1);
-        Boolean updateResult = userInfoService.updateUserInfo(info);
+        Boolean updateResult = userInfoComponent.updateUserInfo(info);
         if (!updateResult) {
             throw new TJNUException(TJNUConstants.SYSTEM_ERROR);
         }
@@ -72,21 +70,15 @@ public class RegisterLoginServiceImpl implements RegisterLoginService {
         if (!realCode.equals(code)) {
             throw new TJNUException(TJNUConstants.VERIFY_CODE_ERROR);
         }
-        Boolean result = userInfoService.saveUserInfo(info);
+        Boolean result = userInfoComponent.saveUserInfo(info);
         return result;
     }
 
     @Override
-    public Boolean logout(String token, String userId) {
+    public Boolean logout(String token) {
         String key = TJNUConstants.TOKEN_KEY_PREFIX + token + TJNUConstants.TOKEN_KEY_SUFIX;
         if (!redisDao.exists(key)) {
             throw new TJNUException(TJNUConstants.USER_NOT_LOG_IN);
-        }
-        String value = Optional.ofNullable(redisDao.get(key)).orElse("");
-        JSONObject jsonObject = JSON.parseObject(value);
-        String storedUserId = Optional.ofNullable(jsonObject.get("userId").toString()).orElse("");
-        if (!storedUserId.equals(userId)) {
-            throw new TJNUException(TJNUConstants.LOG_OUT_ERROR);
         }
         Boolean result = redisDao.del(key);
         return result;
