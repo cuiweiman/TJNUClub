@@ -9,10 +9,12 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
+        <module>tjnu-club-main</module>
+        <module>tjnu-club-api</module>
         <module>tjnu-club-service</module>
         <module>tjnu-club-dao</module>
         <module>tjnu-club-common</module>
-        <module>tjnu-club-web</module>
+        <module>tjnu-club-component</module>
     </modules>
 
     <name>TJNUClub</name>
@@ -45,13 +47,19 @@
 
             <dependency>
                 <groupId>com.tjnu.club</groupId>
-                <artifactId>tjnu-club-service</artifactId>
+                <artifactId>tjnu-club-main</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.tjnu.club</groupId>
-                <artifactId>tjnu-club-common</artifactId>
+                <artifactId>tjnu-club-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tjnu.club</groupId>
+                <artifactId>tjnu-club-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -63,7 +71,7 @@
 
             <dependency>
                 <groupId>com.tjnu.club</groupId>
-                <artifactId>tjnu-club-web</artifactId>
+                <artifactId>tjnu-club-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -137,7 +145,5 @@
 
         </dependencies>
     </dependencyManagement>
-
-
 
 </project>
