@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.Optional;
 
 @Component
 public class RegisterLoginComponentImpl implements RegisterLoginComponent {
@@ -44,20 +45,20 @@ public class RegisterLoginComponentImpl implements RegisterLoginComponent {
         String token = KeyFactory.genToken();
         info.setToken(token);
 
+        //更新用户的最近登录时间和登录次数
+        info.setLastLoginTime(new Date());
+        info.setLoginTimes(Optional.ofNullable(info.getLoginTimes()).orElse(0L) + 1);
+        Boolean updateResult = userInfoComponent.updateUserInfo(info);
+        if (!updateResult) {
+            throw new TJNUException(TJNUConstants.SYSTEM_ERROR);
+        }
+
         //token保存到redis中
         String key = TJNUConstants.TOKEN_KEY_PREFIX + token + TJNUConstants.TOKEN_KEY_SUFIX;
         UserInfo userInfo = new UserInfo();
         BeanUtils.copyProperties(info, userInfo, new String[]{"password"});
         Boolean saveRedis = redisDao.set(key, JSON.toJSONString(userInfo), TJNUConstants.TOKEN_EFFECTIVE_TIME);
         if (!saveRedis) {
-            throw new TJNUException(TJNUConstants.SYSTEM_ERROR);
-        }
-
-        //更新用户的最近登录时间和登录次数
-        info.setLastLoginTime(new Date());
-        info.setLoginTimes(info.getLoginTimes() + 1);
-        Boolean updateResult = userInfoComponent.updateUserInfo(info);
-        if (!updateResult) {
             throw new TJNUException(TJNUConstants.SYSTEM_ERROR);
         }
         return info;

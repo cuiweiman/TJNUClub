@@ -56,12 +56,15 @@ public class ApiGateway {
             } else { // 暂无 List 类型 及 Map 以外的类型
                 return new ResultVO<>(TJNUConstants.UNSUPPORTED_REQUEST_BODY);
             }
+        } catch (TJNUException e) {
+            log.error(e.getMsg(), e);
+            return new ResultVO<>(e);
         } catch (InvocationTargetException e) { //从反射异常中，获取到原方法异常，并返回。
             Object exceptionJson = JSON.toJSON(e.getTargetException());
             Map<String, Object> targetException = (Map<String, Object>) exceptionJson;
             Integer code = (Integer) targetException.get("code");
             String msg = (String) targetException.get("msg");
-            log.error(msg,e);
+            log.error(msg, e);
             return new ResultVO<>(new TJNUException(code, msg));
         } catch (Exception e) {
             String errorTip = "[ " + request.getRemoteAddr() + " ]" + " requestBody: " + JSON.toJSONString(payload) + " exception: " + e.getMessage();
@@ -85,7 +88,6 @@ public class ApiGateway {
                 throw new TJNUException(TJNUConstants.USER_NOT_LOG_IN);
             }
         }
-
         /* 接口相关参数 */
         Class<?> className = Class.forName(apiInfo.getClassName());
         String methodName = apiInfo.getMethodName();
