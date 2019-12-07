@@ -14,4 +14,6 @@ public interface UserInfoService {
 
     ResultVO<Boolean> deleteUserInfo(String userId);
 
+    ResultVO<UserInfoVO> getUserInfoByUserId(String userId);
+
 }

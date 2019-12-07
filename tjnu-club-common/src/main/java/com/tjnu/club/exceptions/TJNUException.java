@@ -1,6 +1,6 @@
 package com.tjnu.club.exceptions;
 
-import com.tjnu.club.constants.TJNUCode;
+import com.tjnu.club.enums.TJNUResultEnum;
 import lombok.Data;
 
 /**
@@ -15,20 +15,19 @@ public class TJNUException extends RuntimeException {
 
     private String msg;
 
+    public TJNUException() {
+        this.code = TJNUResultEnum.SYSTEM_ERROR.getCode();
+        this.msg= TJNUResultEnum.SYSTEM_ERROR.getMessage();
+    }
+
     public TJNUException(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
     }
 
-    public TJNUException(TJNUCode tjnuCode){
-        this.code = tjnuCode.getCode();
-        this.msg = tjnuCode.getMsg();
-    }
-
-    public TJNUException(Integer code, String msg, Throwable cause) {
-        super(cause);
-        this.code = code;
-        this.msg= msg;
+    public TJNUException(TJNUResultEnum resultEnum){
+        this.code = resultEnum.getCode();
+        this.msg = resultEnum.getMessage();
     }
 
 }

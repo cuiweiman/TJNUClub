@@ -4,6 +4,11 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+* @Author: WeiMan Cui
+* @Date: 2019/12/5 9:50
+* @Description: 用户信息
+*/
 @Data
 public class UserInfoVO implements Serializable {
 

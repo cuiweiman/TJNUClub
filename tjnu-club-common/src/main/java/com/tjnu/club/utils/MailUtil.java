@@ -1,6 +1,6 @@
 package com.tjnu.club.utils;
 
-import com.tjnu.club.constants.TJNUConstants;
+import com.tjnu.club.enums.TJNUResultEnum;
 import com.tjnu.club.exceptions.TJNUException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,7 +51,7 @@ public class MailUtil {
             return Boolean.TRUE;
         } catch (MessagingException e) {
             log.error(e.getMessage(),e);
-            throw new TJNUException(TJNUConstants.VERIFY_SEND_FAILURE);
+            throw new TJNUException(TJNUResultEnum.VERIFY_SEND_FAILURE);
         }
     }
 }

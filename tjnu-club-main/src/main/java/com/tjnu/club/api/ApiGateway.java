@@ -1,10 +1,12 @@
 package com.tjnu.club.api;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.tjnu.club.component.ApiMetaInfoComponent;
 import com.tjnu.club.constants.TJNUConstants;
+import com.tjnu.club.enums.TJNUResultEnum;
 import com.tjnu.club.exceptions.TJNUException;
 import com.tjnu.club.info.ApiMetaInfo;
 import com.tjnu.club.redis.RedisDao;
@@ -54,7 +56,7 @@ public class ApiGateway {
             if (payload instanceof Map) {
                 return $invoke((Map) payload);
             } else { // 暂无 List 类型 及 Map 以外的类型
-                return new ResultVO<>(TJNUConstants.UNSUPPORTED_REQUEST_BODY);
+                return new ResultVO<>(TJNUResultEnum.UNSUPPORTED_REQUEST_BODY);
             }
         } catch (TJNUException e) {
             log.error(e.getMsg(), e);
@@ -69,7 +71,7 @@ public class ApiGateway {
         } catch (Exception e) {
             String errorTip = "[ " + request.getRemoteAddr() + " ]" + " requestBody: " + JSON.toJSONString(payload) + " exception: " + e.getMessage();
             log.error(errorTip, e);
-            return new ResultVO<>(TJNUConstants.BAD_GATEWAY);
+            return new ResultVO<>(TJNUResultEnum.BAD_GATEWAY);
         }
     }
 
@@ -83,9 +85,12 @@ public class ApiGateway {
         //校验是否登录
         if (needLogin(apiInfo.getNeedLogin())) {
             String TJNUToken = (String) request.get(REQUEST_TOKEN);
+            if(StrUtil.isEmpty(TJNUToken)){ // 需要登录
+                throw new TJNUException(TJNUResultEnum.TJNU_TOKEN_FAILURE);
+            }
             Boolean checkToken = getLoginToken(TJNUToken);
             if (!checkToken) {
-                throw new TJNUException(TJNUConstants.USER_NOT_LOG_IN);
+                throw new TJNUException(TJNUResultEnum.USER_NOT_LOG_IN);
             }
         }
         /* 接口相关参数 */

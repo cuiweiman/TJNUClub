@@ -1,18 +1,18 @@
 package com.tjnu.club.component.impl;
 
 import com.tjnu.club.component.UserInfoComponent;
-import com.tjnu.club.constants.TJNUConstants;
+import com.tjnu.club.enums.TJNUResultEnum;
 import com.tjnu.club.exceptions.TJNUException;
 import com.tjnu.club.info.UserInfo;
 import com.tjnu.club.mapper.UserInfoMapper;
 import com.tjnu.club.utils.KeyFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.util.*;
 
-@Service
+@Component
 public class UserInfoComponentImpl implements UserInfoComponent {
 
     @Resource
@@ -35,17 +35,17 @@ public class UserInfoComponentImpl implements UserInfoComponent {
         // nickName校验重复
         UserInfo query2 = getUserInfoByNickName(userInfo.getUserId(), userInfo.getNickName());
         if (!ObjectUtils.isEmpty(query2)) {
-            throw new TJNUException(TJNUConstants.NICK_NAME_REPEAT);
+            throw new TJNUException(TJNUResultEnum.NICK_NAME_REPEAT);
         }
 
         //email校验重复
         UserInfo query3 = getUserInfoByEmail(userInfo.getUserId(), userInfo.getEmail());
         if (!ObjectUtils.isEmpty(query3)) {
-            throw new TJNUException(TJNUConstants.EMAIL_REPEAT);
+            throw new TJNUException(TJNUResultEnum.EMAIL_REPEAT);
         }
         Integer result = userInfoMapper.saveUserInfo(userInfo);
         if (result != 1) {
-            throw new TJNUException(TJNUConstants.SAVE_USER_ERROR);
+            throw new TJNUException(TJNUResultEnum.SAVE_USER_ERROR);
         }
         return Boolean.TRUE;
     }
@@ -55,24 +55,24 @@ public class UserInfoComponentImpl implements UserInfoComponent {
         //用户是否存在
         UserInfo query = getUserInfoByUserId(userInfo.getUserId());
         if (ObjectUtils.isEmpty(query)) {
-            throw new TJNUException(TJNUConstants.USER_NOT_EXISTS);
+            throw new TJNUException(TJNUResultEnum.USER_NOT_EXISTS);
         }
 
         // nickName校验重复
         UserInfo query2 = getUserInfoByNickName(userInfo.getUserId(), userInfo.getNickName());
         if (!ObjectUtils.isEmpty(query2)) {
-            throw new TJNUException(TJNUConstants.NICK_NAME_REPEAT);
+            throw new TJNUException(TJNUResultEnum.NICK_NAME_REPEAT);
         }
 
         //email校验重复
         UserInfo query3 = getUserInfoByEmail(userInfo.getUserId(), userInfo.getEmail());
         if (!ObjectUtils.isEmpty(query3)) {
-            throw new TJNUException(TJNUConstants.EMAIL_REPEAT);
+            throw new TJNUException(TJNUResultEnum.EMAIL_REPEAT);
         }
 
         Integer result = userInfoMapper.updateUserInfo(userInfo);
         if (result != 1) {
-            throw new TJNUException(TJNUConstants.UPDATE_USER_ERROR);
+            throw new TJNUException(TJNUResultEnum.UPDATE_USER_ERROR);
         }
         return Boolean.TRUE;
     }
@@ -82,11 +82,11 @@ public class UserInfoComponentImpl implements UserInfoComponent {
         //用户是否存在
         UserInfo query = getUserInfoByUserId(userId);
         if (ObjectUtils.isEmpty(query)) {
-            throw new TJNUException(TJNUConstants.USER_NOT_EXISTS);
+            throw new TJNUException(TJNUResultEnum.USER_NOT_EXISTS);
         }
         Integer result = userInfoMapper.deleteUserInfo(userId);
         if (result != 1) {
-            throw new TJNUException(TJNUConstants.DELETE_USER_ERROR);
+            throw new TJNUException(TJNUResultEnum.DELETE_USER_ERROR);
         }
         return Boolean.TRUE;
     }

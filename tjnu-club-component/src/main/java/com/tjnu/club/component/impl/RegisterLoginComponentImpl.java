@@ -3,10 +3,10 @@ package com.tjnu.club.component.impl;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
-
 import com.tjnu.club.component.RegisterLoginComponent;
 import com.tjnu.club.component.UserInfoComponent;
 import com.tjnu.club.constants.TJNUConstants;
+import com.tjnu.club.enums.TJNUResultEnum;
 import com.tjnu.club.exceptions.TJNUException;
 import com.tjnu.club.info.UserInfo;
 import com.tjnu.club.redis.RedisDao;
@@ -37,10 +37,10 @@ public class RegisterLoginComponentImpl implements RegisterLoginComponent {
     public UserInfo login(String nickNameOrEmail, String password) {
         UserInfo info = userInfoComponent.getUserInfoByNickNameOrEmail(nickNameOrEmail);
         if (ObjectUtil.isEmpty(info) || StrUtil.isBlank(info.getUserId())) {
-            throw new TJNUException(TJNUConstants.USER_NOT_EXISTS);
+            throw new TJNUException(TJNUResultEnum.USER_NOT_EXISTS);
         }
         if (!info.getPassword().equals(password)) {
-            throw new TJNUException(TJNUConstants.USER_PASSWORD_ERROR);
+            throw new TJNUException(TJNUResultEnum.USER_PASSWORD_ERROR);
         }
         String token = KeyFactory.genToken();
         info.setToken(token);
@@ -50,7 +50,7 @@ public class RegisterLoginComponentImpl implements RegisterLoginComponent {
         info.setLoginTimes(Optional.ofNullable(info.getLoginTimes()).orElse(0L) + 1);
         Boolean updateResult = userInfoComponent.updateUserInfo(info);
         if (!updateResult) {
-            throw new TJNUException(TJNUConstants.SYSTEM_ERROR);
+            throw new TJNUException(TJNUResultEnum.SYSTEM_ERROR);
         }
 
         //token保存到redis中
@@ -59,7 +59,7 @@ public class RegisterLoginComponentImpl implements RegisterLoginComponent {
         BeanUtils.copyProperties(info, userInfo, new String[]{"password"});
         Boolean saveRedis = redisDao.set(key, JSON.toJSONString(userInfo), TJNUConstants.TOKEN_EFFECTIVE_TIME);
         if (!saveRedis) {
-            throw new TJNUException(TJNUConstants.SYSTEM_ERROR);
+            throw new TJNUException(TJNUResultEnum.SYSTEM_ERROR);
         }
         return info;
     }
@@ -69,7 +69,7 @@ public class RegisterLoginComponentImpl implements RegisterLoginComponent {
         String key = TJNUConstants.VERIFY_CODE_KEY_PREFIX + info.getEmail() + TJNUConstants.VERIFY_CODE_KEY_SUFIX;
         String realCode = redisDao.get(key);
         if (!realCode.equals(code)) {
-            throw new TJNUException(TJNUConstants.VERIFY_CODE_ERROR);
+            throw new TJNUException(TJNUResultEnum.VERIFY_CODE_ERROR);
         }
         Boolean result = userInfoComponent.saveUserInfo(info);
         return result;
@@ -79,7 +79,7 @@ public class RegisterLoginComponentImpl implements RegisterLoginComponent {
     public Boolean logout(String token) {
         String key = TJNUConstants.TOKEN_KEY_PREFIX + token + TJNUConstants.TOKEN_KEY_SUFIX;
         if (!redisDao.exists(key)) {
-            throw new TJNUException(TJNUConstants.USER_NOT_LOG_IN);
+            throw new TJNUException(TJNUResultEnum.USER_NOT_LOG_IN);
         }
         Boolean result = redisDao.del(key);
         return result;
@@ -92,7 +92,7 @@ public class RegisterLoginComponentImpl implements RegisterLoginComponent {
         String key = TJNUConstants.VERIFY_CODE_KEY_PREFIX + email + TJNUConstants.VERIFY_CODE_KEY_SUFIX;
         Boolean saveRedis = redisDao.set(key, code, 120);
         if (!saveRedis) {
-            throw new TJNUException(TJNUConstants.VERIFY_SAVE_FAILURE);
+            throw new TJNUException(TJNUResultEnum.VERIFY_SAVE_FAILURE);
         }
         //发送到指定邮箱
         Boolean sendFlag = mailUtill.sendMail(email, code);

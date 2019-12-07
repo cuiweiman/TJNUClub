@@ -1,5 +1,6 @@
 package com.tjnu.club.aop;
 
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -18,9 +19,9 @@ import java.util.Date;
 @Slf4j
 @Aspect
 @Component
-public class ApiLoginVerify {
+public class TJNUClubAspect {
 
-    @Pointcut("execution(public * com.tjnu.club.api..*.*(..))")
+    @Pointcut("execution(public * com.tjnu.club.service..*.*(..))")
     public void pointCut() {
     }
 
@@ -28,7 +29,7 @@ public class ApiLoginVerify {
     public void beforeQuery(JoinPoint joinPoint) {
         Date now = new Date();
         String dateStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(now);
-        log.info("aop_" + dateStr, joinPoint.toString());
+        log.info("aop_" + dateStr);
     }
 
 }
