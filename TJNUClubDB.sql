@@ -44,6 +44,118 @@ insert  into `api_meta_info`(`id`,`gmt_create`,`gmt_modified`,`api_name`,`class_
 
 UNLOCK TABLES;
 
+/*Table structure for table `blog_info` */
+
+DROP TABLE IF EXISTS `blog_info`;
+
+CREATE TABLE `blog_info` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `gmt_create` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `gmt_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `blog_id` varchar(64) NOT NULL COMMENT '博客ID/帖子ID',
+  `blog_name` varchar(128) NOT NULL COMMENT '博客名/帖子名',
+  `blog_content` longblob NOT NULL COMMENT '帖子内容',
+  `category_id` varchar(64) NOT NULL COMMENT '所属的版块ID',
+  `user_id` varchar(64) NOT NULL COMMENT '发帖人ID',
+  `read_times` bigint(20) DEFAULT '0' COMMENT '帖子阅读量',
+  `zan_times` bigint(20) DEFAULT '0' COMMENT '帖子点赞量',
+  `is_deleted` bigint(20) NOT NULL DEFAULT '0' COMMENT '逻辑删除，0-未删除，时间戳-删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `blog_info` */
+
+LOCK TABLES `blog_info` WRITE;
+
+UNLOCK TABLES;
+
+/*Table structure for table `category_info` */
+
+DROP TABLE IF EXISTS `category_info`;
+
+CREATE TABLE `category_info` (
+  `id` bigint(20) unsigned zerofill NOT NULL COMMENT '自增id',
+  `gmt_create` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `gmt_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  `category_id` varchar(64) NOT NULL COMMENT '版块ID',
+  `category_name` varchar(128) NOT NULL COMMENT '版块名称',
+  `top_category` int(4) NOT NULL DEFAULT '0' COMMENT '是否是顶级版块-没有父版块。0-是，1-否',
+  `parent_category_id` varchar(64) DEFAULT NULL COMMENT '父版块ID',
+  `is_deleted` bigint(20) NOT NULL DEFAULT '0' COMMENT '逻辑删除，0-未删除，时间戳-删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `category_info` */
+
+LOCK TABLES `category_info` WRITE;
+
+UNLOCK TABLES;
+
+/*Table structure for table `comment_info` */
+
+DROP TABLE IF EXISTS `comment_info`;
+
+CREATE TABLE `comment_info` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `gmt_create` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `gmt_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  `comment_id` varchar(64) NOT NULL COMMENT '评论ID',
+  `comment_content` longblob NOT NULL COMMENT '评论内容',
+  `top_comment` int(4) NOT NULL DEFAULT '0' COMMENT '是否是顶级评论-没有父评论。0-是，1-否',
+  `parent_comment_id` varchar(64) DEFAULT NULL COMMENT '父评论ID',
+  `blog_id` varchar(64) NOT NULL COMMENT '被评论的帖子ID',
+  `zan_times` bigint(20) NOT NULL DEFAULT '0' COMMENT '评论的点赞数量',
+  `user_id` varchar(64) NOT NULL COMMENT '发布人ID',
+  `is_deleted` bigint(20) NOT NULL DEFAULT '0' COMMENT '逻辑删除，0-未删除，时间戳-删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `comment_info` */
+
+LOCK TABLES `comment_info` WRITE;
+
+UNLOCK TABLES;
+
+/*Table structure for table `user_blog_info` */
+
+DROP TABLE IF EXISTS `user_blog_info`;
+
+CREATE TABLE `user_blog_info` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `gmt_create` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `gmt_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `user_id` varchar(64) NOT NULL COMMENT '收录文章/帖子的用户ID',
+  `blog_id` varchar(64) NOT NULL COMMENT '被收录的文章/帖子ID',
+  `is_deleted` bigint(20) NOT NULL DEFAULT '0' COMMENT '逻辑删除，0-未删除，时间戳-删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `user_blog_info` */
+
+LOCK TABLES `user_blog_info` WRITE;
+
+UNLOCK TABLES;
+
+/*Table structure for table `user_category_info` */
+
+DROP TABLE IF EXISTS `user_category_info`;
+
+CREATE TABLE `user_category_info` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `gmt_create` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `gmt_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `user_id` varchar(64) NOT NULL COMMENT '收录版块的用户ID',
+  `category_id` varchar(64) NOT NULL COMMENT '被收录的版块ID',
+  `is_deleted` bigint(20) NOT NULL DEFAULT '0' COMMENT '逻辑删除，0-未删除，时间戳-删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `user_category_info` */
+
+LOCK TABLES `user_category_info` WRITE;
+
+UNLOCK TABLES;
+
 /*Table structure for table `user_info` */
 
 DROP TABLE IF EXISTS `user_info`;
