@@ -59,5 +59,31 @@ public interface CategoryInfoComponent {
      */
     List<CategoryInfo> listChildCategoryInfoById(String categoryId);
 
+    /**
+     * 收藏版块
+     *
+     * @param userId
+     * @param categoryId
+     * @return
+     */
+    Boolean categoryCollected(String userId, String categoryId);
+
+    /**
+     * 用户取消收藏版块
+     *
+     * @param userId
+     * @param categoryId
+     * @return
+     */
+    Boolean categoryCollectedCancel(String userId, String categoryId);
+
+
+    /**
+     * 获取 用户收藏的 版块 列表
+     *
+     * @param userId
+     * @return
+     */
+    List<CategoryInfo> listCategoryInfoCollected(String userId);
 
 }

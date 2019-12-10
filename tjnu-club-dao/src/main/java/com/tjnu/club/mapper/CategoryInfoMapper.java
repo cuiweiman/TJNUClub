@@ -66,4 +66,39 @@ public interface CategoryInfoMapper {
      */
     CategoryInfo getCategoryInfoByCategoryName(@Param("categoryId") String categoryId, @Param("categoryName") String categoryName);
 
+
+    /**
+     * 用户收藏版块
+     *
+     * @param userId
+     * @param categoryId
+     * @return
+     */
+    Integer categoryCollected(@Param("userId") String userId, @Param("categoryId") String categoryId);
+
+    /**
+     * 用户取消收藏版块
+     *
+     * @param userId
+     * @param categoryId
+     * @return
+     */
+    Integer categoryCollectedCancel(@Param("userId") String userId, @Param("categoryId") String categoryId);
+
+    /**
+     * 获取 被 指定用户收藏的 指定版块
+     *
+     * @param userId
+     * @param categoryId
+     * @return
+     */
+    CategoryInfo getCategoryInfoByCollected(@Param("userId") String userId, @Param("categoryId") String categoryId);
+
+    /**
+     * 获取用户收藏的 版块列表
+     *
+     * @param userId
+     * @return
+     */
+    List<CategoryInfo> listCategoryInfoCollected(@Param("userId") String userId);
 }

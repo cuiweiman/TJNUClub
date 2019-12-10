@@ -59,4 +59,30 @@ public interface CategoryInfoService {
      */
     ResultVO<List<CategoryInfoVO>> listChildCategoryInfoById(String categoryId);
 
+    /**
+     * 用户收藏版块
+     *
+     * @param userId
+     * @param categoryId
+     * @return
+     */
+    ResultVO<Boolean> categoryCollected(String userId, String categoryId);
+
+    /**
+     * 用户取消收藏版块
+     *
+     * @param userId
+     * @param categoryId
+     * @return
+     */
+    ResultVO<Boolean> categoryCollectedCancel(String userId, String categoryId);
+
+    /**
+     * 获取用户收藏的版块
+     *
+     * @param userId
+     * @return
+     */
+    ResultVO<List<CategoryInfoVO>> listCategoryInfoCollected(String userId);
+
 }

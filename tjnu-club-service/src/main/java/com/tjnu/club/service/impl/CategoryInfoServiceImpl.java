@@ -94,8 +94,8 @@ public class CategoryInfoServiceImpl extends TJNUService implements CategoryInfo
     public ResultVO<List<CategoryInfoVO>> listCategoryInfo() {
         try {
             List<CategoryInfo> infoList = categoryInfoComponent.listCategoryInfo();
-            List<CategoryInfoVO> vo = infoList.stream().map(info -> ServiceTransferUtil.categoryInfo2Vo(info)).collect(Collectors.toList());
-            return new ResultVO<>(vo);
+            List<CategoryInfoVO> voList = infoList.stream().map(info -> ServiceTransferUtil.categoryInfo2Vo(info)).collect(Collectors.toList());
+            return new ResultVO<>(voList);
         } catch (TJNUException e) {
             log.error(e.getMsg(), e);
             return new ResultVO<>(e);
@@ -110,8 +110,54 @@ public class CategoryInfoServiceImpl extends TJNUService implements CategoryInfo
         super.notBlank("版块ID", categoryId);
         try {
             List<CategoryInfo> infoList = categoryInfoComponent.listChildCategoryInfoById(categoryId);
-            List<CategoryInfoVO> vo = infoList.stream().map(info -> ServiceTransferUtil.categoryInfo2Vo(info)).collect(Collectors.toList());
-            return new ResultVO<>(vo);
+            List<CategoryInfoVO> voList = infoList.stream().map(info -> ServiceTransferUtil.categoryInfo2Vo(info)).collect(Collectors.toList());
+            return new ResultVO<>(voList);
+        } catch (TJNUException e) {
+            log.error(e.getMsg(), e);
+            return new ResultVO<>(e);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return new ResultVO<>(new TJNUException());
+        }
+    }
+
+    @Override
+    public ResultVO<Boolean> categoryCollected(String userId, String categoryId) {
+        super.notBlank("用户ID",userId).notBlank("版块ID",categoryId);
+        try {
+            Boolean result = categoryInfoComponent.categoryCollected(userId,categoryId);
+            return new ResultVO<>(result);
+        } catch (TJNUException e) {
+            log.error(e.getMsg(), e);
+            return new ResultVO<>(e);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return new ResultVO<>(new TJNUException());
+        }
+    }
+
+    @Override
+    public ResultVO<Boolean> categoryCollectedCancel(String userId, String categoryId) {
+        super.notBlank("用户ID",userId).notBlank("版块ID",categoryId);
+        try {
+            Boolean result = categoryInfoComponent.categoryCollectedCancel(userId,categoryId);
+            return new ResultVO<>(result);
+        } catch (TJNUException e) {
+            log.error(e.getMsg(), e);
+            return new ResultVO<>(e);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return new ResultVO<>(new TJNUException());
+        }
+    }
+
+    @Override
+    public ResultVO<List<CategoryInfoVO>> listCategoryInfoCollected(String userId) {
+        super.notBlank("用户ID",userId);
+        try {
+            List<CategoryInfo> infoList = categoryInfoComponent.listCategoryInfoCollected(userId);
+            List<CategoryInfoVO> voList = infoList.stream().map(info -> ServiceTransferUtil.categoryInfo2Vo(info)).collect(Collectors.toList());
+            return new ResultVO<>(voList);
         } catch (TJNUException e) {
             log.error(e.getMsg(), e);
             return new ResultVO<>(e);

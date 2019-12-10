@@ -89,8 +89,48 @@ public class CategoryInfoComponentImpl implements CategoryInfoComponent {
         return infoList;
     }
 
+    @Override
+    public Boolean categoryCollected(String userId, String categoryId) {
+        // 校验该用户是否已收藏该版块
+        CategoryInfo query = getCategoryInfoByCollected(userId, categoryId);
+        if (!ObjectUtil.isEmpty(query)) {
+            throw new TJNUException(TJNUResultEnum.CATEGORY_HAS_COLLECTED);
+        }
+        Integer result = categoryInfoMapper.categoryCollected(userId, categoryId);
+        if (result != 1) {
+            throw new TJNUException(TJNUResultEnum.CATEGORY_COLLECTED_FAILURE);
+        }
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public Boolean categoryCollectedCancel(String userId, String categoryId) {
+        CategoryInfo query = getCategoryInfoByCollected(userId, categoryId);
+        if (ObjectUtil.isEmpty(query)) {
+            throw new TJNUException(TJNUResultEnum.CATEGORY_HAS_NOT_COLLECTED);
+        }
+        Integer result = categoryInfoMapper.categoryCollectedCancel(userId, categoryId);
+        if (result != 1) {
+            throw new TJNUException(TJNUResultEnum.CATEGORY_CANCEL_COLLECTED_FAILURE);
+        }
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public List<CategoryInfo> listCategoryInfoCollected(String userId) {
+        List<CategoryInfo> infoList = Optional.ofNullable(categoryInfoMapper.listCategoryInfoCollected(userId)).orElse(new ArrayList<>());
+        return infoList;
+    }
+
+    // 根据 版块名称 获取 除 指定版块ID 之外的其他版块，用于 版块名称查重
     private CategoryInfo getCategoryInfoByCategoryName(String categoryId, String categoryName) {
         CategoryInfo info = categoryInfoMapper.getCategoryInfoByCategoryName(categoryId, categoryName);
+        return info;
+    }
+
+    // 获取 被 指定用户 收藏的 指定版块
+    private CategoryInfo getCategoryInfoByCollected(String userId, String categoryId) {
+        CategoryInfo info = categoryInfoMapper.getCategoryInfoByCollected(userId, categoryId);
         return info;
     }
 }

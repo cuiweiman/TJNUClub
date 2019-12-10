@@ -81,4 +81,33 @@
         </if>
     </select>
 
+    <insert id="categoryCollected">
+        INSERT INTO user_category_collected
+        <set>
+            user_id = #{userId},
+            category_id = #{categoryId},
+            is_deleted = 0
+        </set>
+    </insert>
+
+    <update id="categoryCollectedCancel">
+        UPDATE user_category_collected
+        <set>
+            is_deleted = UNIX_TIMESTAMP()
+        </set>
+        WHERE user_id = #{userId} AND category_id = #{categoryId} AND is_deleted = 0
+    </update>
+
+    <select id="getCategoryInfoByCollected" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumn"/>
+        FROM user_category_collected
+        WHERE user_id = #{userId} AND category_id = #{categoryId} AND is_deleted = 0
+    </select>
+
+    <select id="listCategoryInfoCollected" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumn"/>
+        FROM user_category_collected
+        WHERE user_id = #{userId} AND is_deleted = 0
+    </select>
+
 </mapper>
