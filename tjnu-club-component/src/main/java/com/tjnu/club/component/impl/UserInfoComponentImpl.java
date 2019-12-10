@@ -1,5 +1,6 @@
 package com.tjnu.club.component.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.tjnu.club.component.UserInfoComponent;
 import com.tjnu.club.enums.TJNUResultEnum;
 import com.tjnu.club.exceptions.TJNUException;
@@ -7,7 +8,6 @@ import com.tjnu.club.info.UserInfo;
 import com.tjnu.club.mapper.UserInfoMapper;
 import com.tjnu.club.utils.KeyFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -25,7 +25,7 @@ public class UserInfoComponentImpl implements UserInfoComponent {
         Boolean flag = Boolean.TRUE;
         while (flag) {
             UserInfo query = getUserInfoByUserId(userId);
-            if (!ObjectUtils.isEmpty(query)) {
+            if (!ObjectUtil.isEmpty(query)) {
                 userId = KeyFactory.genDefaultSerialNo();
             }
             flag = Boolean.FALSE;
@@ -34,18 +34,18 @@ public class UserInfoComponentImpl implements UserInfoComponent {
 
         // nickName校验重复
         UserInfo query2 = getUserInfoByNickName(userInfo.getUserId(), userInfo.getNickName());
-        if (!ObjectUtils.isEmpty(query2)) {
-            throw new TJNUException(TJNUResultEnum.NICK_NAME_REPEAT);
+        if (!ObjectUtil.isEmpty(query2)) {
+            throw new TJNUException(TJNUResultEnum.USER_NICKNAME_REPEATED);
         }
 
         //email校验重复
         UserInfo query3 = getUserInfoByEmail(userInfo.getUserId(), userInfo.getEmail());
-        if (!ObjectUtils.isEmpty(query3)) {
-            throw new TJNUException(TJNUResultEnum.EMAIL_REPEAT);
+        if (!ObjectUtil.isEmpty(query3)) {
+            throw new TJNUException(TJNUResultEnum.USER_EMAIL_REPEATED);
         }
         Integer result = userInfoMapper.saveUserInfo(userInfo);
         if (result != 1) {
-            throw new TJNUException(TJNUResultEnum.SAVE_USER_ERROR);
+            throw new TJNUException(TJNUResultEnum.USER_SAVE_FAILURE);
         }
         return Boolean.TRUE;
     }
@@ -54,25 +54,25 @@ public class UserInfoComponentImpl implements UserInfoComponent {
     public Boolean updateUserInfo(UserInfo userInfo) {
         //用户是否存在
         UserInfo query = getUserInfoByUserId(userInfo.getUserId());
-        if (ObjectUtils.isEmpty(query)) {
+        if (ObjectUtil.isEmpty(query)) {
             throw new TJNUException(TJNUResultEnum.USER_NOT_EXISTS);
         }
 
         // nickName校验重复
         UserInfo query2 = getUserInfoByNickName(userInfo.getUserId(), userInfo.getNickName());
-        if (!ObjectUtils.isEmpty(query2)) {
-            throw new TJNUException(TJNUResultEnum.NICK_NAME_REPEAT);
+        if (!ObjectUtil.isEmpty(query2)) {
+            throw new TJNUException(TJNUResultEnum.USER_NICKNAME_REPEATED);
         }
 
         //email校验重复
         UserInfo query3 = getUserInfoByEmail(userInfo.getUserId(), userInfo.getEmail());
-        if (!ObjectUtils.isEmpty(query3)) {
-            throw new TJNUException(TJNUResultEnum.EMAIL_REPEAT);
+        if (!ObjectUtil.isEmpty(query3)) {
+            throw new TJNUException(TJNUResultEnum.USER_EMAIL_REPEATED);
         }
 
         Integer result = userInfoMapper.updateUserInfo(userInfo);
         if (result != 1) {
-            throw new TJNUException(TJNUResultEnum.UPDATE_USER_ERROR);
+            throw new TJNUException(TJNUResultEnum.USER_UPDATE_FAILURE);
         }
         return Boolean.TRUE;
     }
@@ -81,12 +81,12 @@ public class UserInfoComponentImpl implements UserInfoComponent {
     public Boolean deleteUserInfo(String userId) {
         //用户是否存在
         UserInfo query = getUserInfoByUserId(userId);
-        if (ObjectUtils.isEmpty(query)) {
+        if (ObjectUtil.isEmpty(query)) {
             throw new TJNUException(TJNUResultEnum.USER_NOT_EXISTS);
         }
         Integer result = userInfoMapper.deleteUserInfo(userId);
         if (result != 1) {
-            throw new TJNUException(TJNUResultEnum.DELETE_USER_ERROR);
+            throw new TJNUException(TJNUResultEnum.USER_DELETE_FAILURE);
         }
         return Boolean.TRUE;
     }

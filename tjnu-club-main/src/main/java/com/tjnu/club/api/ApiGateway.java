@@ -56,7 +56,7 @@ public class ApiGateway {
             if (payload instanceof Map) {
                 return $invoke((Map) payload);
             } else { // 暂无 List 类型 及 Map 以外的类型
-                return new ResultVO<>(TJNUResultEnum.UNSUPPORTED_REQUEST_BODY);
+                return new ResultVO<>(TJNUResultEnum.SYSTEM_UNSUPPORTED_REQUEST_BODY);
             }
         } catch (TJNUException e) {
             log.error(e.getMsg(), e);
@@ -71,7 +71,7 @@ public class ApiGateway {
         } catch (Exception e) {
             String errorTip = "[ " + request.getRemoteAddr() + " ]" + " requestBody: " + JSON.toJSONString(payload) + " exception: " + e.getMessage();
             log.error(errorTip, e);
-            return new ResultVO<>(TJNUResultEnum.BAD_GATEWAY);
+            return new ResultVO<>(new TJNUException(TJNUResultEnum.SYSTEM_BAD_GATEWAY));
         }
     }
 
@@ -85,8 +85,8 @@ public class ApiGateway {
         //校验是否登录
         if (needLogin(apiInfo.getNeedLogin())) {
             String TJNUToken = (String) request.get(REQUEST_TOKEN);
-            if(StrUtil.isEmpty(TJNUToken)){ // 需要登录
-                throw new TJNUException(TJNUResultEnum.TJNU_TOKEN_FAILURE);
+            if (StrUtil.isEmpty(TJNUToken)) { // 需要登录
+                throw new TJNUException(TJNUResultEnum.SYSTEM_TOKEN_FAILURE);
             }
             Boolean checkToken = getLoginToken(TJNUToken);
             if (!checkToken) {
@@ -96,11 +96,11 @@ public class ApiGateway {
         /* 接口相关参数 */
         Class<?> className = Class.forName(apiInfo.getClassName());
         String methodName = apiInfo.getMethodName();
-        String paramType = apiInfo.getParamType();
-        String paramsMeta = apiInfo.getParamsMeta();
+        String paramType = Optional.ofNullable(apiInfo.getParamType()).orElse("");
+        String paramsMeta = Optional.ofNullable(apiInfo.getParamsMeta()).orElse("");
 
-        Class[] paramTypeArr = buildParamType(paramType);
-        Object[] paramValueArr = Optional.ofNullable(buildParamValue(paramTypeArr, paramsMeta, reqParams)).orElse(new Object[0]);
+        Class[] paramTypeArr = StrUtil.isEmpty(paramType) ? null : buildParamType(paramType);
+        Object[] paramValueArr = paramTypeArr == null ? null : Optional.ofNullable(buildParamValue(paramTypeArr, paramsMeta, reqParams)).orElse(new Object[0]);
 
         Object classBean = ApplicationContextUtil.getBean(className);
         Method method = classBean.getClass().getMethod(methodName, paramTypeArr);

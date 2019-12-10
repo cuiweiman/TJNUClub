@@ -1,12 +1,12 @@
 package com.tjnu.club.component.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.tjnu.club.component.ApiMetaInfoComponent;
 import com.tjnu.club.enums.TJNUResultEnum;
 import com.tjnu.club.exceptions.TJNUException;
 import com.tjnu.club.info.ApiMetaInfo;
 import com.tjnu.club.mapper.ApiMetaInfoMapper;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 
@@ -19,8 +19,8 @@ public class ApiMetaInfoComponentImpl implements ApiMetaInfoComponent {
     @Override
     public ApiMetaInfo getApiMetaInfoByApiName(String apiName) {
         ApiMetaInfo apiMetaInfo = apiMetaInfoMapper.getApiMetaInfoByApiName(apiName);
-        if(ObjectUtils.isEmpty(apiMetaInfo)){
-            throw new TJNUException(TJNUResultEnum.API_NAME_ERROR);
+        if(ObjectUtil.isEmpty(apiMetaInfo)){
+            throw new TJNUException(TJNUResultEnum.SYSTEM_API_NAME_ERROR);
         }
         return apiMetaInfo;
     }

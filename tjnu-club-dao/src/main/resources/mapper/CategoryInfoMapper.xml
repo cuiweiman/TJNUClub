@@ -13,10 +13,72 @@
     </resultMap>
 
     <sql id="BaseColumn">
-        id,gmt_create,gmt_modified,category_id,category_name,top_category,parent_category_id,id_deleted
+        id,gmt_create,gmt_modified,category_id,category_name,top_category,parent_category_id,is_deleted
     </sql>
 
+    <insert id="saveCategoryInfo">
+        INSERT INTO category_info
+        <set>
+            category_id = #{categoryId},
+            category_name = #{categoryName},
+            top_category = #{topCategory},
+            <if test="topCategory == 1">
+                parent_category_id = #{parentCategoryId},
+            </if>
+            is_deleted = 0
+        </set>
+    </insert>
 
+    <update id="updateCategoryInfo">
+        UPDATE category_info
+        <set>
+            <if test="categoryName != null">
+                category_name = #{categoryName},
+            </if>
+            <if test="topCategory != null">
+                top_category = #{topCategory},
+            </if>
+            <if test="parentCategoryId != null">
+                parent_category_id = #{parentCategoryId},
+            </if>
+            gmt_modified = now()
+        </set>
+        WHERE category_id = #{categoryId} AND is_deleted = 0
+    </update>
 
+    <update id="deleteCategoryInfo">
+        UPDATE category_info
+        <set>
+            is_deleted = UNIX_TIMESTAMP()
+        </set>
+        WHERE category_id = #{categoryId} AND is_deleted = 0
+    </update>
+
+    <select id="getCategoryInfoById" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumn" />
+        FROM category_info
+        WHERE category_id = #{categoryId} AND is_deleted = 0
+    </select>
+
+    <select id="listCategoryInfo" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumn" />
+        FROM category_info
+        WHERE top_category = 0 AND is_deleted = 0
+    </select>
+
+    <select id="listChildCategoryInfoById" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumn" />
+        FROM category_info
+        WHERE top_category = 1 AND is_deleted = 0 AND parent_category_id = #{categoryId}
+    </select>
+
+    <select id="getCategoryInfoByCategoryName" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumn"/>
+        FROM category_info
+        WHERE category_name = #{categoryName} AND is_deleted = 0
+        <if test="categoryId != null">
+            AND category_id != #{categoryId}
+        </if>
+    </select>
 
 </mapper>

@@ -1,17 +1,17 @@
-package com.tjnu.club.info;
+package com.tjnu.club.vo;
 
 import lombok.Data;
 
-import java.util.Date;
+import java.io.Serializable;
 
 @Data
-public class CategoryInfo {
+public class CategoryInfoVO implements Serializable {
 
     private Long id;
 
-    private Date gmtCreate;
+    private Long gmtCreate;
 
-    private Date gmtModified;
+    private Long gmtModified;
 
     //版块ID
     private String categoryId;

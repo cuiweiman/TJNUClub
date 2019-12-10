@@ -50,7 +50,7 @@ public class RegisterLoginComponentImpl implements RegisterLoginComponent {
         info.setLoginTimes(Optional.ofNullable(info.getLoginTimes()).orElse(0L) + 1);
         Boolean updateResult = userInfoComponent.updateUserInfo(info);
         if (!updateResult) {
-            throw new TJNUException(TJNUResultEnum.SYSTEM_ERROR);
+            throw new TJNUException(TJNUResultEnum.USER_UPDATE_LOGIN_ERROR);
         }
 
         //token保存到redis中
@@ -59,7 +59,7 @@ public class RegisterLoginComponentImpl implements RegisterLoginComponent {
         BeanUtils.copyProperties(info, userInfo, new String[]{"password"});
         Boolean saveRedis = redisDao.set(key, JSON.toJSONString(userInfo), TJNUConstants.TOKEN_EFFECTIVE_TIME);
         if (!saveRedis) {
-            throw new TJNUException(TJNUResultEnum.SYSTEM_ERROR);
+            throw new TJNUException(TJNUResultEnum.USER_LOGIN_ERROR);
         }
         return info;
     }
@@ -69,7 +69,7 @@ public class RegisterLoginComponentImpl implements RegisterLoginComponent {
         String key = TJNUConstants.VERIFY_CODE_KEY_PREFIX + info.getEmail() + TJNUConstants.VERIFY_CODE_KEY_SUFIX;
         String realCode = redisDao.get(key);
         if (!realCode.equals(code)) {
-            throw new TJNUException(TJNUResultEnum.VERIFY_CODE_ERROR);
+            throw new TJNUException(TJNUResultEnum.USER_VERIFY_CODE_ERROR);
         }
         Boolean result = userInfoComponent.saveUserInfo(info);
         return result;
@@ -82,7 +82,10 @@ public class RegisterLoginComponentImpl implements RegisterLoginComponent {
             throw new TJNUException(TJNUResultEnum.USER_NOT_LOG_IN);
         }
         Boolean result = redisDao.del(key);
-        return result;
+        if (!result) {
+            throw new TJNUException(TJNUResultEnum.USER_LOGOUT_ERROR);
+        }
+        return Boolean.TRUE;
     }
 
     @Override
@@ -92,7 +95,7 @@ public class RegisterLoginComponentImpl implements RegisterLoginComponent {
         String key = TJNUConstants.VERIFY_CODE_KEY_PREFIX + email + TJNUConstants.VERIFY_CODE_KEY_SUFIX;
         Boolean saveRedis = redisDao.set(key, code, 120);
         if (!saveRedis) {
-            throw new TJNUException(TJNUResultEnum.VERIFY_SAVE_FAILURE);
+            throw new TJNUException(TJNUResultEnum.USER_VERIFY_SAVE_FAILURE);
         }
         //发送到指定邮箱
         Boolean sendFlag = mailUtill.sendMail(email, code);

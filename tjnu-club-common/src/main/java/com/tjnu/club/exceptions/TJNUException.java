@@ -15,7 +15,7 @@ public class TJNUException extends RuntimeException {
 
     private String msg;
 
-    public TJNUException() {
+    public TJNUException() { // 系统错误
         this.code = TJNUResultEnum.SYSTEM_ERROR.getCode();
         this.msg= TJNUResultEnum.SYSTEM_ERROR.getMessage();
     }
