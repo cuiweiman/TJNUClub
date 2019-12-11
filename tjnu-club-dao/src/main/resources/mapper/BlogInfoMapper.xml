@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tjnu.club.mapper.BlogInfoMapper">
+    <resultMap id="BaseResultMap" type="com.tjnu.club.info.BlogInfo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+        <result column="blog_id" jdbcType="VARCHAR" property="blogId"/>
+        <result column="blog_name" jdbcType="VARCHAR" property="blogName"/>
+        <result column="blog_content" jdbcType="BYTE" property="blogContent"/>
+        <result column="category_id" jdbcType="VARCHAR" property="categoryId"/>
+        <result column="top_blog" jdbcType="INTEGER" property="topBlog"/>
+        <result column="parent_blog_id" jdbcType="VARCHAR" property="parentBlogId"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="read_times" jdbcType="INTEGER" property="readTimes"/>
+        <result column="zan_times" jdbcType="INTEGER" property="zanTimes"/>
+        <result column="is_deleted" jdbcType="BIGINT" property="isDeleted"/>
+    </resultMap>
+
+    <sql id="BaseColumn">
+        id,gmt_create,gmt_modified,blog_id,blog_name,blog_content,category_id,top_blog,parent_blog_id,user_id,read_times,zan_times,is_deleted
+    </sql>
+
+    <insert id="saveBlogInfo">
+        INSERT INTO blog_info
+        blog_id = #{blogId},
+        blog_name = #{blogName},
+        blog_content = #{blogContent},
+        category_id = #{categoryId},
+        top_blog = #{topBlog},
+        <if test="topBlog == 1">
+            parent_blog_id = #{parentBlogId},
+        </if>
+        user_id = #{userId},
+        is_deleted = 0
+    </insert>
+
+    <update id="updateBlogInfo">
+        UPDATE blog_info
+        <set>
+            <if test="blogName!=null">
+                blog_name = #{blogName},
+            </if>
+            <if test="blogContent!=null">
+                blog_content = #{blogContent},
+            </if>
+            <if test="categoryId!=null">
+                category_id = #{categoryId},
+            </if>
+            <if test="topBlog!=null">
+                top_blog = #{topBlog},
+            </if>
+            <if test="topBlog==1 and parentBlogId!=null">
+                parent_blog_id = #{parentBlogId},
+            </if>
+        </set>
+        WHERE blog_id = #{blogId} AND is_deleted = 0 AND user_id = #{userId}
+    </update>
+
+    <update id="deleteBlogInfo">
+        UPDATE blog_info
+        <set>
+            is_deleted = UNIX_TIMESTAMP()
+        </set>
+        WHERE blog_id = #{blogId} AND is_deleted = 0
+
+    </update>
+
+    <select id="countBlogInfoByCategoryId" resultType="java.lang.Long">
+
+    </select>
+
+    <select id="listBlogInfoByCategoryId" resultMap="BaseResultMap">
+
+    </select>
+
+    <select id="listBlogInfoTopN" resultMap="BaseResultMap">
+
+    </select>
+
+    <select id="getBlogInfoByBlogId" resultMap="BaseResultMap">
+
+    </select>
+
+    <select id="countChildBlogInfoByBlogId" resultType="java.lang.Long">
+
+    </select>
+
+    <select id="listChildBlogInfoByBlogId" resultMap="BaseResultMap">
+
+    </select>
+
+    <select id="countBlogInfoByUserId" resultType="java.lang.Long">
+
+    </select>
+
+    <select id="listBlogInfoByUserId" resultMap="BaseResultMap">
+
+    </select>
+
+</mapper>
