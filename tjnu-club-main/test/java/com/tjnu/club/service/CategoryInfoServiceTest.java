@@ -68,4 +68,28 @@ public class CategoryInfoServiceTest extends TJNUClubTest {
         System.out.println(JSON.toJSON(result));
     }
 
+    @Test
+    public void categoryCollected(){
+        String userId = "1000";
+        String categoryId = "157596138576589";
+        ResultVO<Boolean> result = categoryInfoService.categoryCollected(userId,categoryId);
+        System.out.println(JSON.toJSON(result));
+    }
+
+    @Test
+    public void categoryCollectedCancel(){
+        String userId = "1000";
+        String categoryId = "157596138576589";
+        ResultVO<Boolean> result = categoryInfoService.categoryCollectedCancel(userId,categoryId);
+        System.out.println(JSON.toJSON(result));
+    }
+
+    @Test
+    public void listCategoryInfoCollected(){
+        String userId = "1000";
+        ResultVO<List<CategoryInfoVO>> result = categoryInfoService.listCategoryInfoCollected(userId);
+        System.out.println(JSON.toJSON(result));
+    }
+
+
 }

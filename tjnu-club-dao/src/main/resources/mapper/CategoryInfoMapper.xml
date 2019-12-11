@@ -99,15 +99,15 @@
     </update>
 
     <select id="getCategoryInfoByCollected" resultMap="BaseResultMap">
-        SELECT <include refid="BaseColumn"/>
-        FROM user_category_collected
-        WHERE user_id = #{userId} AND category_id = #{categoryId} AND is_deleted = 0
+        SELECT c.*
+        FROM user_category_collected u LEFT JOIN category_info c ON u.category_id=c.category_id AND c.is_deleted=0
+        WHERE u.user_id = #{userId} AND u.category_id = #{categoryId} AND u.is_deleted = 0
     </select>
 
     <select id="listCategoryInfoCollected" resultMap="BaseResultMap">
-        SELECT <include refid="BaseColumn"/>
-        FROM user_category_collected
-        WHERE user_id = #{userId} AND is_deleted = 0
+        SELECT c.*
+        FROM user_category_collected u LEFT JOIN category_info c ON u.category_id=c.category_id AND c.is_deleted=0
+        WHERE u.user_id = #{userId} AND u.is_deleted = 0
     </select>
 
 </mapper>
