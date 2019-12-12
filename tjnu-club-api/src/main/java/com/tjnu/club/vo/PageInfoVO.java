@@ -2,6 +2,7 @@ package com.tjnu.club.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
 * @Description: 分页信息
 */
 @Data
-public class PageInfoVO<T> {
+public class PageInfoVO<T> implements Serializable {
 
     private Long count;
 

@@ -7,7 +7,7 @@
         <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
         <result column="blog_id" jdbcType="VARCHAR" property="blogId"/>
         <result column="blog_name" jdbcType="VARCHAR" property="blogName"/>
-        <result column="blog_content" jdbcType="BYTE" property="blogContent"/>
+        <result column="blog_content" jdbcType="VARCHAR" property="blogContent"/>
         <result column="category_id" jdbcType="VARCHAR" property="categoryId"/>
         <result column="top_blog" jdbcType="INTEGER" property="topBlog"/>
         <result column="parent_blog_id" jdbcType="VARCHAR" property="parentBlogId"/>
@@ -15,6 +15,17 @@
         <result column="read_times" jdbcType="INTEGER" property="readTimes"/>
         <result column="zan_times" jdbcType="INTEGER" property="zanTimes"/>
         <result column="is_deleted" jdbcType="BIGINT" property="isDeleted"/>
+    </resultMap>
+
+    <resultMap id="UserBlogInfo" type="com.tjnu.club.info.UserBlogInfo">
+        <association property="blogInfo" resultMap="BaseResultMap" javaType="com.tjnu.club.info.BlogInfo"/>
+        <association property="userInfo" javaType="com.tjnu.club.info.UserInfo">
+            <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+            <result column="user_img" jdbcType="VARCHAR" property="userImg"/>
+            <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+            <result column="email" jdbcType="VARCHAR" property="email"/>
+            <result column="description" jdbcType="VARCHAR" property="description"/>
+        </association>
     </resultMap>
 
     <sql id="BaseColumn">
@@ -62,40 +73,87 @@
         <set>
             is_deleted = UNIX_TIMESTAMP()
         </set>
-        WHERE blog_id = #{blogId} AND is_deleted = 0
+        WHERE is_deleted = 0 AND (blog_id = #{blogId} OR parent_blog_id = #{blogId} )
 
     </update>
 
-    <select id="countBlogInfoByCategoryId" resultType="java.lang.Long">
-
+    <select id="countMainBlogInfoByCategoryId" resultType="java.lang.Long">
+        SELECT COUNT(blog_id)
+        FROM blog_info
+        WHERE category_id=#{categoryId} AND is_deleted=0 AND top_blog=0
     </select>
 
-    <select id="listBlogInfoByCategoryId" resultMap="BaseResultMap">
-
+    <select id="listMainBlogInfoByCategoryId" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumn"/>
+        FROM blog_info
+        WHERE category_id=#{categoryId} AND is_deleted=0 AND top_blog=0
+        ORDER BY gmt_create DESC
+        <if test="currentPage!=null and pageSize!=null">
+            LIMIT #{currentPage},#{pageSize}
+        </if>
     </select>
 
     <select id="listBlogInfoTopN" resultMap="BaseResultMap">
-
+        SELECT a.*
+        FROM `blog_info` a JOIN `blog_info` b ON a.`blog_id`=b.`parent_blog_id` AND b.`is_deleted`=0
+        WHERE  b.`is_deleted`=0 AND b.`top_blog` = 1 AND b.`gmt_create` &gt;= #{begin} AND b.`gmt_create` &lt; #{end}
+        GROUP BY b.`parent_blog_id`
+        ORDER BY COUNT(b.`blog_id`) DESC
+        LIMIT #{topN}
     </select>
 
-    <select id="getBlogInfoByBlogId" resultMap="BaseResultMap">
-
+    <select id="getMainBlogInfoByBlogId" resultMap="UserBlogInfo">
+        SELECT u.user_id,u.user_img,u.nick_name,u.email,u.description,b.*
+        FROM `blog_info` b LEFT JOIN `user_info` u ON b.`user_id`=u.`user_id`
+        WHERE b.blog_id = #{blogId} AND b.is_deleted = 0 AND b.top_blog=0;
     </select>
 
     <select id="countChildBlogInfoByBlogId" resultType="java.lang.Long">
-
+        SELECT COUNT(b.`blog_id`)
+        FROM `blog_info` b LEFT JOIN `user_info` u ON b.`user_id`=u.`user_id`
+        WHERE b.`parent_blog_id`=#{blogId} AND b.`is_deleted`=0 AND b.`top_blog`=1
+        ORDER BY b.`gmt_create` ASC
     </select>
 
-    <select id="listChildBlogInfoByBlogId" resultMap="BaseResultMap">
-
+    <select id="listChildBlogInfoByBlogId" resultMap="UserBlogInfo">
+        SELECT u.user_id,u.user_img,u.nick_name,u.email,u.description,b.*
+        FROM `blog_info` b LEFT JOIN `user_info` u ON b.`user_id`=u.`user_id`
+        WHERE b.`parent_blog_id`=#{blogId} AND b.`is_deleted`=0 AND b.`top_blog`=1
+        ORDER BY b.`gmt_create` ASC
+        <if test="currentPage!=null and pageSize!=null">
+            LIMIT #{currentPage},#{pageSize}
+        </if>
     </select>
 
     <select id="countBlogInfoByUserId" resultType="java.lang.Long">
-
+        SELECT COUNT(b.`blog_id`)
+        FROM `user_info` u LEFT JOIN `blog_info`  b ON u.`user_id`=b.`user_id`
+        WHERE u.`user_id`=#{userId} AND b.`top_blog` = 0 AND b.`is_deleted`=0
     </select>
 
     <select id="listBlogInfoByUserId" resultMap="BaseResultMap">
+        SELECT b.*
+        FROM `user_info` u LEFT JOIN `blog_info`  b ON u.`user_id`=b.`user_id`
+        WHERE u.`user_id`=#{userId} AND b.`top_blog` = 0 AND b.`is_deleted`=0
+        ORDER BY b.`gmt_create` DESC
+        <if test="currentPage!=null and pageSize!=null">
+            LIMIT #{currentPage},#{pageSize}
+        </if>
+    </select>
 
+    <select id="getBlogInfoByBlogId" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumn"/>
+        FROM `blog_info`
+        WHERE blog_id=#{blogId} AND is_deleted=0
+    </select>
+
+    <select id="getBlogInfoByBlogName" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumn"/>
+        FROM `blog_info`
+        WHERE blog_name=#{blogName} AND is_deleted=0
+        <if test="blogId!=null">
+            blog_id != #{blogId}
+        </if>
     </select>
 
 </mapper>

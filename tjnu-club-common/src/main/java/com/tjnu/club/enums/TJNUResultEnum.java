@@ -41,7 +41,7 @@ public enum TJNUResultEnum implements Serializable {
     USER_UPDATE_LOGIN_ERROR(1012,"更新用户登录信息失败"),
 
     /**
-     * 博客/帖子 版块信息 错误码 1021-1040
+     * 版块信息 错误码 1021-1040
      */
     CATEGORY_NAME_REPEATED(1021, "版块名称重复"),
     CATEGORY_SAVE_FAILURE(1022, "版块信息保存失败"),
@@ -54,6 +54,14 @@ public enum TJNUResultEnum implements Serializable {
     CATEGORY_HAS_NOT_COLLECTED(1029,"该板块尚未被收藏"),
     CATEGORY_CANCEL_COLLECTED_FAILURE(1030,"该板块取消收藏失败"),
 
+    /**
+     * 帖子 错误码 1041-1060
+     */
+    BLOG_NAME_REPEATED(1041,"帖子名称已存在"),
+    BLOG_SAVE_FAILURE(1042,"帖子信息保存失败"),
+    BLOG_NOT_EXISTS(1043,"该帖子信息不存在"),
+    BLOG_UPDATE_FAILURE(1044,"帖子信息修改失败"),
+    BLOG_DELETE_FAILURE(1045,"帖子信息删除失败"),
 
     ;
 

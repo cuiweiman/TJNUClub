@@ -3,6 +3,7 @@ package com.tjnu.club.service.impl;
 import com.tjnu.club.api.CategoryInfoService;
 import com.tjnu.club.component.CategoryInfoComponent;
 import com.tjnu.club.constants.TJNUService;
+import com.tjnu.club.enums.TJNUResultEnum;
 import com.tjnu.club.enums.TJNUStatusEnums;
 import com.tjnu.club.exceptions.TJNUException;
 import com.tjnu.club.info.CategoryInfo;
@@ -123,9 +124,9 @@ public class CategoryInfoServiceImpl extends TJNUService implements CategoryInfo
 
     @Override
     public ResultVO<Boolean> categoryCollected(String userId, String categoryId) {
-        super.notBlank("用户ID",userId).notBlank("版块ID",categoryId);
+        super.notBlank("用户ID", userId).notBlank("版块ID", categoryId);
         try {
-            Boolean result = categoryInfoComponent.categoryCollected(userId,categoryId);
+            Boolean result = categoryInfoComponent.categoryCollected(userId, categoryId);
             return new ResultVO<>(result);
         } catch (TJNUException e) {
             log.error(e.getMsg(), e);
@@ -138,9 +139,9 @@ public class CategoryInfoServiceImpl extends TJNUService implements CategoryInfo
 
     @Override
     public ResultVO<Boolean> categoryCollectedCancel(String userId, String categoryId) {
-        super.notBlank("用户ID",userId).notBlank("版块ID",categoryId);
+        super.notBlank("用户ID", userId).notBlank("版块ID", categoryId);
         try {
-            Boolean result = categoryInfoComponent.categoryCollectedCancel(userId,categoryId);
+            Boolean result = categoryInfoComponent.categoryCollectedCancel(userId, categoryId);
             return new ResultVO<>(result);
         } catch (TJNUException e) {
             log.error(e.getMsg(), e);
@@ -153,7 +154,7 @@ public class CategoryInfoServiceImpl extends TJNUService implements CategoryInfo
 
     @Override
     public ResultVO<List<CategoryInfoVO>> listCategoryInfoCollected(String userId) {
-        super.notBlank("用户ID",userId);
+        super.notBlank("用户ID", userId);
         try {
             List<CategoryInfo> infoList = categoryInfoComponent.listCategoryInfoCollected(userId);
             List<CategoryInfoVO> voList = infoList.stream().map(info -> ServiceTransferUtil.categoryInfo2Vo(info)).collect(Collectors.toList());
@@ -172,8 +173,10 @@ public class CategoryInfoServiceImpl extends TJNUService implements CategoryInfo
                 .notNull("顶级版块标识", vo.getTopCategory());
         if (vo.getTopCategory() == TJNUStatusEnums.CATEGORY_NOT_TOP.getCode()) { //非顶级版块，校验父版块ID
             super.notBlank("父版块", vo.getParentCategoryId());
-        } else { // 父版块
+        } else if (vo.getTopCategory() == TJNUStatusEnums.CATEGORY_TOP.getCode()) { // 父版块
             vo.setParentCategoryId(null);
+        } else {
+            throw new TJNUException(TJNUResultEnum.SYSTEM_PARAM_ERROR);
         }
     }
 }

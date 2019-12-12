@@ -1,6 +1,7 @@
 package com.tjnu.club.component;
 
 import com.tjnu.club.info.BlogInfo;
+import com.tjnu.club.info.UserBlogInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -35,25 +36,37 @@ public interface BlogInfoComponent {
 
     /**
      * 查询 指定版块ID 下的 主贴列表
+     *
      * @param categoryId 版块ID，不填写则展示全板块
      * @return
      */
-    Map<String, Object> listBlogInfoByCategoryId(String categoryId);
+    Map<String, Object> listMainBlogInfoByCategoryId(String categoryId, Integer currentPage, Integer pageSize);
 
     /**
      * 获取 当天 热门盖楼的主贴 列表
+     *
      * @param topN topN条帖子
      * @return
      */
     List<BlogInfo> listBlogInfoTopN(Integer topN);
 
     /**
-     * 根据帖子ID，获取 帖子详情 和 盖楼的回帖
+     * 根据帖子ID，获取 帖子详情 主贴
      *
      * @param blogId
      * @return
      */
-    Map<String, Object> listBlogInfoByBlogId(String blogId);
+    UserBlogInfo getMainBlogInfoByBlogId(String blogId);
+
+    /**
+     * 根据帖子ID，获取 主贴 盖楼 的 回帖
+     *
+     * @param blogId
+     * @param currentPage
+     * @param pageSize
+     * @return
+     */
+    Map<String, Object> listChildBlogInfoByBlogId(String blogId, Integer currentPage, Integer pageSize);
 
     /**
      * 用户发布的帖子
@@ -61,7 +74,7 @@ public interface BlogInfoComponent {
      * @param userId
      * @return
      */
-    Map<String, Object> listBlogInfoByUserId(String userId);
+    Map<String, Object> listBlogInfoByUserId(String userId, Integer currentPage, Integer pageSize);
 
 
 }

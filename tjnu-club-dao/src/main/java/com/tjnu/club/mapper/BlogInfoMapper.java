@@ -1,8 +1,11 @@
 package com.tjnu.club.mapper;
 
 import com.tjnu.club.info.BlogInfo;
+import com.tjnu.club.info.UserBlogInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -15,7 +18,7 @@ public interface BlogInfoMapper {
      * @param blogInfo
      * @return
      */
-    Boolean saveBlogInfo(BlogInfo blogInfo);
+    Integer saveBlogInfo(BlogInfo blogInfo);
 
 
     /**
@@ -24,7 +27,7 @@ public interface BlogInfoMapper {
      * @param blogInfo
      * @return
      */
-    Boolean updateBlogInfo(BlogInfo blogInfo);
+    Integer updateBlogInfo(BlogInfo blogInfo);
 
 
     /**
@@ -33,25 +36,29 @@ public interface BlogInfoMapper {
      * @param blogId
      * @return
      */
-    Boolean deleteBlogInfo(String blogId);
+    Integer deleteBlogInfo(@Param("blogId") String blogId);
 
 
     /**
      * 查询 指定版块ID 下的 主贴列表
+     *
      * @param categoryId 版块ID，不填写则展示全板块
      * @return
      */
-    long countBlogInfoByCategoryId(String categoryId);
+    long countMainBlogInfoByCategoryId(@Param("categoryId") String categoryId);
 
-    List<BlogInfo> listBlogInfoByCategoryId(String categoryId);
+    List<BlogInfo> listMainBlogInfoByCategoryId(@Param("categoryId") String categoryId, @Param("currentPage") Integer currentPage, @Param("pageSize") Integer pageSize);
 
 
     /**
      * 获取 当天 热门盖楼的主贴 列表
-     * @param topN topN条帖子
+     *
+     * @param topN  topN条帖子
+     * @param begin 开始时间
+     * @param end   结束时间
      * @return
      */
-    List<BlogInfo> listBlogInfoTopN(Integer topN);
+    List<BlogInfo> listBlogInfoTopN(@Param("topN") Integer topN, @Param("begin") Date begin, @Param("end") Date end);
 
 
     /**
@@ -60,11 +67,11 @@ public interface BlogInfoMapper {
      * @param blogId
      * @return
      */
-    BlogInfo getBlogInfoByBlogId(String blogId);
+    UserBlogInfo getMainBlogInfoByBlogId(@Param("blogId") String blogId);
 
-    Long countChildBlogInfoByBlogId(String blogId);
+    Long countChildBlogInfoByBlogId(@Param("blogId") String blogId);
 
-    List<BlogInfo> listChildBlogInfoByBlogId(String blogId);
+    List<UserBlogInfo> listChildBlogInfoByBlogId(@Param("blogId") String blogId, @Param("currentPage") Integer currentPage, @Param("pageSize") Integer pageSize);
 
 
     /**
@@ -73,9 +80,14 @@ public interface BlogInfoMapper {
      * @param userId
      * @return
      */
-    Long countBlogInfoByUserId(String userId);
+    Long countBlogInfoByUserId(@Param("userId") String userId);
 
-    List<BlogInfo> listBlogInfoByUserId(String userId);
+    List<BlogInfo> listBlogInfoByUserId(@Param("userId") String userId, @Param("currentPage") Integer currentPage, @Param("pageSize") Integer pageSize);
 
 
+    // 根据 帖子ID获取帖子信息，不分主贴和回帖
+    BlogInfo getBlogInfoByBlogId(@Param("blogId") String blogId);
+
+    // 根据 帖子名称，获取除指定ID之外的帖子信息
+    BlogInfo getBlogInfoByBlogName(@Param("blogId") String blogId, @Param("blogName") String blogName);
 }

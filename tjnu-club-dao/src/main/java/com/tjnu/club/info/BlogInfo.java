@@ -17,11 +17,11 @@ public class BlogInfo {
 
     private String blogName;
 
-    private Byte blogContent;
+    private String blogContent;
 
     private String categoryId;
 
-    private String topBlog;
+    private Integer topBlog;
 
     private String parentBlogId;
 

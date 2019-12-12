@@ -14,7 +14,8 @@ public enum TJNUStatusEnums implements Serializable {
 
     CATEGORY_TOP(0,"顶级版块"),
     CATEGORY_NOT_TOP(1,"子版块"),
-
+    BLOG_TOP(0,"主贴"),
+    BLOG_NOT_TOP(1,"回帖")
     ;
 
     private Integer code;
