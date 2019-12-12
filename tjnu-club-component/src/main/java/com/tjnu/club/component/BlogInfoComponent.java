@@ -77,4 +77,31 @@ public interface BlogInfoComponent {
     Map<String, Object> listBlogInfoByUserId(String userId, Integer currentPage, Integer pageSize);
 
 
+    /**
+     * 用户收藏帖子
+     *
+     * @param userId
+     * @param blogId
+     * @return
+     */
+    Boolean blogCollected(String userId, String blogId);
+
+    /**
+     * 用户取消帖子的收藏
+     *
+     * @param userId
+     * @param blogId
+     * @return
+     */
+    Boolean blogCollectedCancel(String userId, String blogId);
+
+    /**
+     * 用户 收藏 帖子 的列表
+     *
+     * @param userId
+     * @return
+     */
+    Map<String, Object> listBlogInfoCollected(String userId, Integer currentPage, Integer pageSize);
+
+
 }

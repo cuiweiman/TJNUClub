@@ -34,22 +34,26 @@
 
     <insert id="saveBlogInfo">
         INSERT INTO blog_info
-        blog_id = #{blogId},
-        blog_name = #{blogName},
-        blog_content = #{blogContent},
-        category_id = #{categoryId},
-        top_blog = #{topBlog},
-        <if test="topBlog == 1">
-            parent_blog_id = #{parentBlogId},
-        </if>
-        user_id = #{userId},
-        is_deleted = 0
+        <set>
+            blog_id = #{blogId},
+            <if test="topBlog == 0">
+                blog_name = #{blogName},
+            </if>
+            blog_content = #{blogContent},
+            category_id = #{categoryId},
+            top_blog = #{topBlog},
+            <if test="topBlog == 1">
+                parent_blog_id = #{parentBlogId},
+            </if>
+            user_id = #{userId},
+            is_deleted = 0
+        </set>
     </insert>
 
     <update id="updateBlogInfo">
         UPDATE blog_info
         <set>
-            <if test="blogName!=null">
+            <if test="blogName!=null and topBlog == 0">
                 blog_name = #{blogName},
             </if>
             <if test="blogContent!=null">
@@ -141,6 +145,38 @@
         </if>
     </select>
 
+    <insert id="blogCollected">
+        INSERT INTO `user_blog_collected`
+        <set>
+            user_id = #{userId},
+            blog_id = #{blogId}
+        </set>
+    </insert>
+
+    <update id="blogCollectedCancel">
+        UPDATE `user_blog_collected`
+        <set>
+            is_deleted = UNIX_TIMESTAMP()
+        </set>
+        WHERE user_id = #{userId} AND blog_id = #{blogId} AND is_deleted = 0
+    </update>
+
+    <select id="countBlogInfoCollected" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM `user_blog_collected` u LEFT JOIN `blog_info` b ON u.`blog_id`=b.`blog_id` AND b.`is_deleted`=0
+        WHERE u.user_id = #{userId} AND u.is_deleted = 0
+    </select>
+
+    <select id="listBlogInfoCollected" resultMap="BaseResultMap">
+        SELECT b.*
+        FROM `user_blog_collected` u LEFT JOIN `blog_info` b ON u.`blog_id`=b.`blog_id` AND b.`is_deleted`=0
+        WHERE u.user_id = #{userId} AND u.is_deleted = 0
+        ORDER BY u.gmt_create DESC
+        <if test="currentPage!=null and pageSize!=null">
+            LIMIT #{currentPage},#{pageSize}
+        </if>
+    </select>
+
     <select id="getBlogInfoByBlogId" resultMap="BaseResultMap">
         SELECT <include refid="BaseColumn"/>
         FROM `blog_info`
@@ -152,8 +188,14 @@
         FROM `blog_info`
         WHERE blog_name=#{blogName} AND is_deleted=0
         <if test="blogId!=null">
-            blog_id != #{blogId}
+            AND blog_id != #{blogId}
         </if>
+    </select>
+
+    <select id="getBlogInfoCollected" resultMap="BaseResultMap">
+        SELECT b.*
+        FROM `user_blog_collected` u LEFT JOIN `blog_info` b ON u.`blog_id`=b.`blog_id` AND b.`is_deleted`=0
+        WHERE u.user_id = #{userId} AND u.blog_id = #{blogId} AND u.is_deleted = 0
     </select>
 
 </mapper>

@@ -62,6 +62,10 @@ public enum TJNUResultEnum implements Serializable {
     BLOG_NOT_EXISTS(1043,"该帖子信息不存在"),
     BLOG_UPDATE_FAILURE(1044,"帖子信息修改失败"),
     BLOG_DELETE_FAILURE(1045,"帖子信息删除失败"),
+    BLOG_HAS_COLLECTED(1046,"该帖子已收藏"),
+    BLOG_COLLECTED_FAILURE(1047,"帖子收藏失败"),
+    BLOG_HAS_NOT_COLLECTED(1048,"该帖子尚未被收藏"),
+    BLOG_CANCEL_COLLECTED_FAILURE(1049,"该帖子取消收藏失败"),
 
     ;
 

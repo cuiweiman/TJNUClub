@@ -85,9 +85,43 @@ public interface BlogInfoMapper {
     List<BlogInfo> listBlogInfoByUserId(@Param("userId") String userId, @Param("currentPage") Integer currentPage, @Param("pageSize") Integer pageSize);
 
 
+    /**
+     * 用户收藏帖子
+     *
+     * @param userId
+     * @param blogId
+     * @return
+     */
+    Integer blogCollected(@Param("userId") String userId, @Param("blogId") String blogId);
+
+
+    /**
+     * 用户取消收藏帖子
+     *
+     * @param userId
+     * @param blogId
+     * @return
+     */
+    Integer blogCollectedCancel(@Param("userId") String userId, @Param("blogId") String blogId);
+
+
+    /**
+     * 获取 用户收藏的 帖子 列表
+     *
+     * @param userId
+     * @return
+     */
+    Long countBlogInfoCollected(@Param("userId") String userId);
+
+    List<BlogInfo> listBlogInfoCollected(@Param("userId") String userId, @Param("currentPage") Integer currentPage, @Param("pageSize") Integer pageSize);
+
+
     // 根据 帖子ID获取帖子信息，不分主贴和回帖
     BlogInfo getBlogInfoByBlogId(@Param("blogId") String blogId);
 
     // 根据 帖子名称，获取除指定ID之外的帖子信息
     BlogInfo getBlogInfoByBlogName(@Param("blogId") String blogId, @Param("blogName") String blogName);
+
+    // 根据 用户ID 和 帖子ID 获取用户已收藏的 帖子信息
+    BlogInfo getBlogInfoCollected(@Param("userId") String userId, @Param("blogId") String blogId);
 }

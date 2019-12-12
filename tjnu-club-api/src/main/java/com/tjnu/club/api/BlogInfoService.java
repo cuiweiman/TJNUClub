@@ -83,4 +83,30 @@ public interface BlogInfoService {
      */
     ResultVO<PageInfoVO<BlogInfoVO>> listBlogInfoByUserId(String userId, Integer currentPage, Integer pageSize);
 
+    /**
+     * 用户收藏帖子
+     *
+     * @param userId
+     * @param blogId
+     * @return
+     */
+    ResultVO<Boolean> blogCollected(String userId, String blogId);
+
+    /**
+     * 用户取消帖子的收藏
+     *
+     * @param userId
+     * @param blogId
+     * @return
+     */
+    ResultVO<Boolean> blogCollectedCancel(String userId, String blogId);
+
+    /**
+     * 用户 收藏 帖子 的列表
+     *
+     * @param userId
+     * @return
+     */
+    ResultVO<PageInfoVO<BlogInfoVO>> listBlogInfoCollected(String userId,Integer currentPage,Integer pageSize);
+
 }

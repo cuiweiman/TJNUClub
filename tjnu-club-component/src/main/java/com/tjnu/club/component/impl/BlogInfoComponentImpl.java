@@ -113,6 +113,49 @@ public class BlogInfoComponentImpl implements BlogInfoComponent {
         return map;
     }
 
+    @Override
+    public Boolean blogCollected(String userId, String blogId) {
+        // 校验该帖子是否仍存在
+        BlogInfo query = getBlogInfoByBlogId(blogId);
+        if (ObjectUtil.isEmpty(query)) {
+            throw new TJNUException(TJNUResultEnum.BLOG_NOT_EXISTS);
+        }
+        // 校验用户是否已收藏过
+        BlogInfo query2 = getBlogInfoCollected(userId, blogId);
+        if (ObjectUtil.isNotEmpty(query2)) {
+            throw new TJNUException(TJNUResultEnum.BLOG_HAS_COLLECTED);
+        }
+        Integer result = blogInfoMapper.blogCollected(userId, blogId);
+        if (result != 1) {
+            throw new TJNUException(TJNUResultEnum.BLOG_COLLECTED_FAILURE);
+        }
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public Boolean blogCollectedCancel(String userId, String blogId) {
+        // 校验用户是否已收藏过
+        BlogInfo query1 = getBlogInfoCollected(userId, blogId);
+        if (ObjectUtil.isEmpty(query1)) {
+            throw new TJNUException(TJNUResultEnum.BLOG_HAS_NOT_COLLECTED);
+        }
+        Integer result = blogInfoMapper.blogCollectedCancel(userId, blogId);
+        if (result != 1) {
+            throw new TJNUException(TJNUResultEnum.BLOG_CANCEL_COLLECTED_FAILURE);
+        }
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public Map<String, Object> listBlogInfoCollected(String userId, Integer currentPage, Integer pageSize) {
+        Long count = Optional.ofNullable(blogInfoMapper.countBlogInfoCollected(userId)).orElse(0L);
+        List<BlogInfo> infoList = Optional.ofNullable(blogInfoMapper.listBlogInfoCollected(userId,currentPage,pageSize)).orElse(new ArrayList<>());
+        Map<String,Object> map = new HashMap<>();
+        map.put("count",count);
+        map.put("data",infoList);
+        return map;
+    }
+
     // 根据帖子ID查询帖子信息
     private BlogInfo getBlogInfoByBlogId(String blogId) {
         BlogInfo info = blogInfoMapper.getBlogInfoByBlogId(blogId);
@@ -121,7 +164,13 @@ public class BlogInfoComponentImpl implements BlogInfoComponent {
 
     // 根据帖子名称查询帖子信息
     private BlogInfo getBlogInfoByBlogName(String blogId, String blogName) {
-        BlogInfo info = blogInfoMapper.getBlogInfoByBlogName(blogId,blogName);
+        BlogInfo info = blogInfoMapper.getBlogInfoByBlogName(blogId, blogName);
+        return info;
+    }
+
+    //获取用户收藏的帖子 判断是否已收藏
+    private BlogInfo getBlogInfoCollected(String userId, String blogId) {
+        BlogInfo info = blogInfoMapper.getBlogInfoCollected(userId, blogId);
         return info;
     }
 }
