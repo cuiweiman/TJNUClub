@@ -48,7 +48,7 @@ public interface BlogInfoComponent {
      * @param topN topN条帖子
      * @return
      */
-    List<BlogInfo> listBlogInfoTopN(Integer topN);
+    List<UserBlogInfo> listBlogInfoTopN(Integer topN);
 
     /**
      * 根据帖子ID，获取 帖子详情 主贴

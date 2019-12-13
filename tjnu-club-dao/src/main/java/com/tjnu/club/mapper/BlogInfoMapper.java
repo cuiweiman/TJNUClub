@@ -47,7 +47,7 @@ public interface BlogInfoMapper {
      */
     long countMainBlogInfoByCategoryId(@Param("categoryId") String categoryId);
 
-    List<BlogInfo> listMainBlogInfoByCategoryId(@Param("categoryId") String categoryId, @Param("currentPage") Integer currentPage, @Param("pageSize") Integer pageSize);
+    List<UserBlogInfo> listMainBlogInfoByCategoryId(@Param("categoryId") String categoryId, @Param("currentPage") Integer currentPage, @Param("pageSize") Integer pageSize);
 
 
     /**
@@ -58,7 +58,7 @@ public interface BlogInfoMapper {
      * @param end   结束时间
      * @return
      */
-    List<BlogInfo> listBlogInfoTopN(@Param("topN") Integer topN, @Param("begin") Date begin, @Param("end") Date end);
+    List<UserBlogInfo> listBlogInfoTopN(@Param("topN") Integer topN, @Param("begin") Date begin, @Param("end") Date end);
 
 
     /**
@@ -82,7 +82,7 @@ public interface BlogInfoMapper {
      */
     Long countBlogInfoByUserId(@Param("userId") String userId);
 
-    List<BlogInfo> listBlogInfoByUserId(@Param("userId") String userId, @Param("currentPage") Integer currentPage, @Param("pageSize") Integer pageSize);
+    List<UserBlogInfo> listBlogInfoByUserId(@Param("userId") String userId, @Param("currentPage") Integer currentPage, @Param("pageSize") Integer pageSize);
 
 
     /**
@@ -113,7 +113,7 @@ public interface BlogInfoMapper {
      */
     Long countBlogInfoCollected(@Param("userId") String userId);
 
-    List<BlogInfo> listBlogInfoCollected(@Param("userId") String userId, @Param("currentPage") Integer currentPage, @Param("pageSize") Integer pageSize);
+    List<UserBlogInfo> listBlogInfoCollected(@Param("userId") String userId, @Param("currentPage") Integer currentPage, @Param("pageSize") Integer pageSize);
 
 
     // 根据 帖子ID获取帖子信息，不分主贴和回帖

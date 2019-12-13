@@ -45,7 +45,7 @@ public interface BlogInfoService {
      * @param categoryId 版块ID，不填写则展示全板块
      * @return
      */
-    ResultVO<PageInfoVO<BlogInfoVO>> listMainBlogInfoByCategoryId(String categoryId, Integer currentPage, Integer pageSize);
+    ResultVO<PageInfoVO<UserBlogInfoVO>> listMainBlogInfoByCategoryId(String categoryId, Integer currentPage, Integer pageSize);
 
     /**
      * 获取 当天 热门盖楼的主贴 列表
@@ -53,7 +53,7 @@ public interface BlogInfoService {
      * @param topN topN条帖子
      * @return
      */
-    ResultVO<List<BlogInfoVO>> listBlogInfoTopN(Integer topN);
+    ResultVO<List<UserBlogInfoVO>> listBlogInfoTopN(Integer topN);
 
     /**
      * 根据帖子ID，获取 帖子详情 主贴
@@ -81,7 +81,7 @@ public interface BlogInfoService {
      * @param pageSize
      * @return
      */
-    ResultVO<PageInfoVO<BlogInfoVO>> listBlogInfoByUserId(String userId, Integer currentPage, Integer pageSize);
+    ResultVO<PageInfoVO<UserBlogInfoVO>> listBlogInfoByUserId(String userId, Integer currentPage, Integer pageSize);
 
     /**
      * 用户收藏帖子
@@ -107,6 +107,6 @@ public interface BlogInfoService {
      * @param userId
      * @return
      */
-    ResultVO<PageInfoVO<BlogInfoVO>> listBlogInfoCollected(String userId,Integer currentPage,Integer pageSize);
+    ResultVO<PageInfoVO<UserBlogInfoVO>> listBlogInfoCollected(String userId,Integer currentPage,Integer pageSize);
 
 }

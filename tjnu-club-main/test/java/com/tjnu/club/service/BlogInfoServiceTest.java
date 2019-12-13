@@ -56,14 +56,14 @@ public class BlogInfoServiceTest extends TJNUClubTest {
         String categoryId = "157596070314861";
         Integer currentPage = 1;
         Integer pageSize = 100;
-        ResultVO<PageInfoVO<BlogInfoVO>> result = blogInfoService.listMainBlogInfoByCategoryId(categoryId, currentPage, pageSize);
+        ResultVO<PageInfoVO<UserBlogInfoVO>> result = blogInfoService.listMainBlogInfoByCategoryId(categoryId, currentPage, pageSize);
         System.out.println(JSON.toJSON(result));
     }
 
     @Test
     public void listBlogInfoTopN() {
         Integer topN = 10;
-        ResultVO<List<BlogInfoVO>> result = blogInfoService.listBlogInfoTopN(topN);
+        ResultVO<List<UserBlogInfoVO>> result = blogInfoService.listBlogInfoTopN(topN);
         System.out.println(JSON.toJSON(result));
     }
 
@@ -88,14 +88,14 @@ public class BlogInfoServiceTest extends TJNUClubTest {
         String userId = "1000";
         Integer currentPage = 1;
         Integer pageSize = 100;
-        ResultVO<PageInfoVO<BlogInfoVO>> result = blogInfoService.listBlogInfoByUserId(userId, currentPage, pageSize);
+        ResultVO<PageInfoVO<UserBlogInfoVO>> result = blogInfoService.listBlogInfoByUserId(userId, currentPage, pageSize);
         System.out.println(JSON.toJSON(result));
     }
 
     @Test
     public void blogCollected() {
         String userId = "1000";
-        String blogId = "1005";
+        String blogId = "1006";
         ResultVO<Boolean> result = blogInfoService.blogCollected(userId, blogId);
         System.out.println(JSON.toJSON(result));
     }
@@ -103,7 +103,7 @@ public class BlogInfoServiceTest extends TJNUClubTest {
     @Test
     public void blogCollectedCancel() {
         String userId = "1000";
-        String blogId = "";
+        String blogId = "1005";
         ResultVO<Boolean> result  = blogInfoService.blogCollectedCancel(userId, blogId);
         System.out.println(JSON.toJSON(result));
     }
@@ -113,7 +113,7 @@ public class BlogInfoServiceTest extends TJNUClubTest {
         String userId = "1000";
         Integer currentPage = 1;
         Integer pageSize = 100;
-        ResultVO<PageInfoVO<BlogInfoVO>> result = blogInfoService.listBlogInfoCollected(userId, currentPage, pageSize);
+        ResultVO<PageInfoVO<UserBlogInfoVO>> result = blogInfoService.listBlogInfoCollected(userId, currentPage, pageSize);
         System.out.println(JSON.toJSON(result));
     }
 }

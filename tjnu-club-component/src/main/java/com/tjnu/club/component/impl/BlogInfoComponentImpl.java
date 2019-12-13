@@ -70,20 +70,20 @@ public class BlogInfoComponentImpl implements BlogInfoComponent {
     public Map<String, Object> listMainBlogInfoByCategoryId(String categoryId, Integer currentPage, Integer pageSize) {
         Map<String, Object> map = new HashMap<>();
         Long count = Optional.ofNullable(blogInfoMapper.countMainBlogInfoByCategoryId(categoryId)).orElse(0L);
-        List<BlogInfo> infoList = Optional.ofNullable(blogInfoMapper.listMainBlogInfoByCategoryId(categoryId, currentPage, pageSize)).orElse(new ArrayList<>());
+        List<UserBlogInfo> infoList = Optional.ofNullable(blogInfoMapper.listMainBlogInfoByCategoryId(categoryId, currentPage, pageSize)).orElse(new ArrayList<>());
         map.put("count", count);
         map.put("data", infoList);
         return map;
     }
 
     @Override
-    public List<BlogInfo> listBlogInfoTopN(Integer topN) {
+    public List<UserBlogInfo> listBlogInfoTopN(Integer topN) {
         long current = System.currentTimeMillis();    //当前时间毫秒数
         long beginT = current / (1000 * 3600 * 24) * (1000 * 3600 * 24) - TimeZone.getDefault().getRawOffset();  //今天零点零分零秒的毫秒数
         long endT = beginT + 24 * 60 * 60 * 1000;  //明天0点0分0秒的毫秒数
         Date begin = new Date(beginT);
         Date end = new Date(endT);
-        List<BlogInfo> infoList = Optional.ofNullable(blogInfoMapper.listBlogInfoTopN(topN, begin, end)).orElse(new ArrayList<>());
+        List<UserBlogInfo> infoList = Optional.ofNullable(blogInfoMapper.listBlogInfoTopN(topN, begin, end)).orElse(new ArrayList<>());
         return infoList;
     }
 
@@ -107,7 +107,7 @@ public class BlogInfoComponentImpl implements BlogInfoComponent {
     public Map<String, Object> listBlogInfoByUserId(String userId, Integer currentPage, Integer pageSize) {
         Map<String, Object> map = new HashMap<>();
         Long count = Optional.ofNullable(blogInfoMapper.countBlogInfoByUserId(userId)).orElse(0L);
-        List<BlogInfo> infoList = Optional.ofNullable(blogInfoMapper.listBlogInfoByUserId(userId, currentPage, pageSize)).orElse(new ArrayList<>());
+        List<UserBlogInfo> infoList = Optional.ofNullable(blogInfoMapper.listBlogInfoByUserId(userId, currentPage, pageSize)).orElse(new ArrayList<>());
         map.put("count", count);
         map.put("data", infoList);
         return map;
@@ -149,7 +149,7 @@ public class BlogInfoComponentImpl implements BlogInfoComponent {
     @Override
     public Map<String, Object> listBlogInfoCollected(String userId, Integer currentPage, Integer pageSize) {
         Long count = Optional.ofNullable(blogInfoMapper.countBlogInfoCollected(userId)).orElse(0L);
-        List<BlogInfo> infoList = Optional.ofNullable(blogInfoMapper.listBlogInfoCollected(userId,currentPage,pageSize)).orElse(new ArrayList<>());
+        List<UserBlogInfo> infoList = Optional.ofNullable(blogInfoMapper.listBlogInfoCollected(userId,currentPage,pageSize)).orElse(new ArrayList<>());
         Map<String,Object> map = new HashMap<>();
         map.put("count",count);
         map.put("data",infoList);

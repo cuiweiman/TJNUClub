@@ -80,15 +80,15 @@ public class BlogInfoServiceImpl extends TJNUService implements BlogInfoService 
     }
 
     @Override
-    public ResultVO<PageInfoVO<BlogInfoVO>> listMainBlogInfoByCategoryId(String categoryId, Integer currentPage, Integer pageSize) {
+    public ResultVO<PageInfoVO<UserBlogInfoVO>> listMainBlogInfoByCategoryId(String categoryId, Integer currentPage, Integer pageSize) {
         super.notBlank("版块ID", categoryId).checkPage(currentPage, pageSize);
         Integer current = (currentPage - 1) * pageSize;
         try {
             Map<String, Object> map = blogInfoComponent.listMainBlogInfoByCategoryId(categoryId, current, pageSize);
             Long count = (long) map.get("count");
-            List<BlogInfo> infoList = (List<BlogInfo>) map.get("data");
-            List<BlogInfoVO> voList = infoList.stream().map(info -> ServiceTransferUtil.blogInfo2Vo(info)).collect(Collectors.toList());
-            PageInfoVO<BlogInfoVO> result = new PageInfoVO<>(count, voList);
+            List<UserBlogInfo> infoList = (List<UserBlogInfo>) map.get("data");
+            List<UserBlogInfoVO> voList = infoList.stream().map(info -> ServiceTransferUtil.userBlogInfo2Vo(info)).collect(Collectors.toList());
+            PageInfoVO<UserBlogInfoVO> result = new PageInfoVO<>(count, voList);
             return new ResultVO<>(result);
         } catch (TJNUException e) {
             log.error(e.getMessage(), e);
@@ -100,11 +100,11 @@ public class BlogInfoServiceImpl extends TJNUService implements BlogInfoService 
     }
 
     @Override
-    public ResultVO<List<BlogInfoVO>> listBlogInfoTopN(Integer topN) {
+    public ResultVO<List<UserBlogInfoVO>> listBlogInfoTopN(Integer topN) {
         super.notNull("热门帖子条数", topN);
         try {
-            List<BlogInfo> infoList = blogInfoComponent.listBlogInfoTopN(topN);
-            List<BlogInfoVO> voList = infoList.stream().map(info -> ServiceTransferUtil.blogInfo2Vo(info)).collect(Collectors.toList());
+            List<UserBlogInfo> infoList = blogInfoComponent.listBlogInfoTopN(topN);
+            List<UserBlogInfoVO> voList = infoList.stream().map(info -> ServiceTransferUtil.userBlogInfo2Vo(info)).collect(Collectors.toList());
             return new ResultVO<>(voList);
         } catch (TJNUException e) {
             log.error(e.getMessage(), e);
@@ -152,15 +152,15 @@ public class BlogInfoServiceImpl extends TJNUService implements BlogInfoService 
     }
 
     @Override
-    public ResultVO<PageInfoVO<BlogInfoVO>> listBlogInfoByUserId(String userId, Integer currentPage, Integer pageSize) {
+    public ResultVO<PageInfoVO<UserBlogInfoVO>> listBlogInfoByUserId(String userId, Integer currentPage, Integer pageSize) {
         super.notBlank("用户ID", userId).checkPage(currentPage, pageSize);
         Integer current = (currentPage - 1) * pageSize;
         try {
             Map<String, Object> map = blogInfoComponent.listBlogInfoByUserId(userId, current, pageSize);
             Long count = (Long) map.get("count");
-            List<BlogInfo> infoList = (List<BlogInfo>) map.get("data");
-            List<BlogInfoVO> voList = infoList.stream().map(info -> ServiceTransferUtil.blogInfo2Vo(info)).collect(Collectors.toList());
-            PageInfoVO<BlogInfoVO> result = new PageInfoVO<>(count, voList);
+            List<UserBlogInfo> infoList = (List<UserBlogInfo>) map.get("data");
+            List<UserBlogInfoVO> voList = infoList.stream().map(info -> ServiceTransferUtil.userBlogInfo2Vo(info)).collect(Collectors.toList());
+            PageInfoVO<UserBlogInfoVO> result = new PageInfoVO<>(count, voList);
             return new ResultVO<>(result);
         } catch (TJNUException e) {
             log.error(e.getMessage(), e);
@@ -202,15 +202,15 @@ public class BlogInfoServiceImpl extends TJNUService implements BlogInfoService 
     }
 
     @Override
-    public ResultVO<PageInfoVO<BlogInfoVO>> listBlogInfoCollected(String userId, Integer currentPage, Integer pageSize) {
+    public ResultVO<PageInfoVO<UserBlogInfoVO>> listBlogInfoCollected(String userId, Integer currentPage, Integer pageSize) {
         super.notBlank("用户ID", userId).checkPage(currentPage, pageSize);
         Integer current = (currentPage - 1) * pageSize;
         try {
             Map<String, Object> map = blogInfoComponent.listBlogInfoCollected(userId, current, pageSize);
             Long count = (long) map.get("count");
-            List<BlogInfo> infoList = (List<BlogInfo>) map.get("data");
-            List<BlogInfoVO> voList = infoList.stream().map(info -> ServiceTransferUtil.blogInfo2Vo(info)).collect(Collectors.toList());
-            PageInfoVO<BlogInfoVO> result = new PageInfoVO<>(count, voList);
+            List<UserBlogInfo> infoList = (List<UserBlogInfo>) map.get("data");
+            List<UserBlogInfoVO> voList = infoList.stream().map(info -> ServiceTransferUtil.userBlogInfo2Vo(info)).collect(Collectors.toList());
+            PageInfoVO<UserBlogInfoVO> result = new PageInfoVO<>(count, voList);
             return new ResultVO<>(result);
         } catch (TJNUException e) {
             log.error(e.getMsg(), e);

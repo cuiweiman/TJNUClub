@@ -87,19 +87,20 @@
         WHERE category_id=#{categoryId} AND is_deleted=0 AND top_blog=0
     </select>
 
-    <select id="listMainBlogInfoByCategoryId" resultMap="BaseResultMap">
-        SELECT <include refid="BaseColumn"/>
-        FROM blog_info
-        WHERE category_id=#{categoryId} AND is_deleted=0 AND top_blog=0
-        ORDER BY gmt_create DESC
+    <select id="listMainBlogInfoByCategoryId" resultMap="UserBlogInfo">
+        SELECT u.user_id,u.user_img,u.nick_name,u.email,u.description,b.*
+        FROM blog_info b LEFT JOIN `user_info` u ON b.`user_id`=u.`user_id` AND u.`is_deleted`=0
+        WHERE b.category_id=#{categoryId} AND b.is_deleted=0 AND b.top_blog=0
+        ORDER BY b.gmt_create DESC
         <if test="currentPage!=null and pageSize!=null">
             LIMIT #{currentPage},#{pageSize}
         </if>
     </select>
 
-    <select id="listBlogInfoTopN" resultMap="BaseResultMap">
-        SELECT a.*
+    <select id="listBlogInfoTopN" resultMap="UserBlogInfo">
+        SELECT u.user_id,u.user_img,u.nick_name,u.email,u.description,a.*
         FROM `blog_info` a JOIN `blog_info` b ON a.`blog_id`=b.`parent_blog_id` AND b.`is_deleted`=0
+        LEFT JOIN `user_info` u ON a.`user_id`=u.`user_id` AND u.`is_deleted`=0
         WHERE  b.`is_deleted`=0 AND b.`top_blog` = 1 AND b.`gmt_create` &gt;= #{begin} AND b.`gmt_create` &lt; #{end}
         GROUP BY b.`parent_blog_id`
         ORDER BY COUNT(b.`blog_id`) DESC
@@ -135,8 +136,8 @@
         WHERE u.`user_id`=#{userId} AND b.`top_blog` = 0 AND b.`is_deleted`=0
     </select>
 
-    <select id="listBlogInfoByUserId" resultMap="BaseResultMap">
-        SELECT b.*
+    <select id="listBlogInfoByUserId" resultMap="UserBlogInfo">
+        SELECT u.user_id,u.user_img,u.nick_name,u.email,u.description,b.*
         FROM `user_info` u LEFT JOIN `blog_info`  b ON u.`user_id`=b.`user_id`
         WHERE u.`user_id`=#{userId} AND b.`top_blog` = 0 AND b.`is_deleted`=0
         ORDER BY b.`gmt_create` DESC
@@ -164,12 +165,14 @@
     <select id="countBlogInfoCollected" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM `user_blog_collected` u LEFT JOIN `blog_info` b ON u.`blog_id`=b.`blog_id` AND b.`is_deleted`=0
+        LEFT JOIN `user_info` userInfo ON b.`user_id`=userInfo.`user_id`
         WHERE u.user_id = #{userId} AND u.is_deleted = 0
     </select>
 
-    <select id="listBlogInfoCollected" resultMap="BaseResultMap">
-        SELECT b.*
+    <select id="listBlogInfoCollected" resultMap="UserBlogInfo">
+        SELECT userInfo.user_id,userInfo.user_img,userInfo.nick_name,userInfo.email,userInfo.description,b.*
         FROM `user_blog_collected` u LEFT JOIN `blog_info` b ON u.`blog_id`=b.`blog_id` AND b.`is_deleted`=0
+        LEFT JOIN `user_info` userInfo ON b.`user_id`=userInfo.`user_id`
         WHERE u.user_id = #{userId} AND u.is_deleted = 0
         ORDER BY u.gmt_create DESC
         <if test="currentPage!=null and pageSize!=null">
