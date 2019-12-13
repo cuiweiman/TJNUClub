@@ -21,24 +21,35 @@ CREATE TABLE `api_meta_info` (
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
 
 
-INSERT INTO `api_meta_info` (`id`,`gmt_create`,`gmt_modified`,`api_name`,`class_name`,`method_name`,`param_type`,`params_meta`,`need_login`,`is_record`,`desc`,`is_deleted`) 
+INSERT INTO `api_meta_info` (`api_name`,`class_name`,`method_name`,`param_type`,`params_meta`,`need_login`,`is_record`,`desc`,`is_deleted`)
 VALUES
-(1,'2019-12-04 21:17:21','2019-12-11 10:26:57','/user/update','com.tjnu.club.api.UserInfoService','updateUserInfo','["com.tjnu.club.vo.UserInfoVO"]','["userInfoVO"]',1,0,'用户-信息修改',0),
-(2,'2019-12-04 16:53:52','2019-12-11 10:26:55','/user/delete','com.tjnu.club.api.UserInfoService','deleteUserInfo','["java.lang.String"]','["userId"]',1,0,'用户-逻辑删除',0),
-(3,'2019-12-04 21:14:56','2019-12-11 10:26:51','/user/login','com.tjnu.club.api.RegisterLoginService','login','["java.lang.String","java.lang.String"]','["nickNameOrEmail","password"]',0,0,'用户-登录',0),
-(4,'2019-12-04 21:14:56','2019-12-11 10:26:50','/user/register','com.tjnu.club.api.RegisterLoginService','register','["com.tjnu.club.vo.UserInfoVO"]','["userInfoVO"]',0,0,'用户-注册',0),
-(5,'2019-12-04 21:14:56','2019-12-11 10:26:48','/user/logout','com.tjnu.club.api.RegisterLoginService','logout','["java.lang.String"]','["token"]',1,0,'用户-登出',0),
-(6,'2019-12-04 21:14:56','2019-12-11 10:26:45','/email/sendCode','com.tjnu.club.api.RegisterLoginService','emailVerify','["java.lang.String"]','["email"]',0,0,'验证码-发送邮箱验证码',0),
-(7,'2019-12-07 14:11:51','2019-12-11 10:26:39','/user/get','com.tjnu.club.api.UserInfoService','getUserInfoByUserId','["java.lang.String"]','["userId"]',1,0,'用户-信息获取',0),
-(8,'2019-12-10 16:31:33','2019-12-11 10:26:34','/category/save','com.tjnu.club.api.CategoryInfoService','saveCategoryInfo','["com.tjnu.club.vo.CategoryInfoVO"]','["categoryInfoVO"]',1,0,'版块-新增',0),
-(9,'2019-12-10 16:31:40','2019-12-11 10:26:32','/category/update','com.tjnu.club.api.CategoryInfoService','updateCategoryInfo','["com.tjnu.club.vo.CategoryInfoVO"]','["categoryInfoVO"]',1,0,'版块-修改',0),
-(10,'2019-12-10 16:31:45','2019-12-11 10:26:31','/category/delete','com.tjnu.club.api.CategoryInfoService','deleteCategoryInfo','["java.lang.String"]','["categoryId"]',1,0,'版块-删除',0),
-(11,'2019-12-10 16:31:51','2019-12-11 10:26:27','/category/get','com.tjnu.club.api.CategoryInfoService','getCategoryInfoById','["java.lang.String"]','["categoryId"]',1,0,'版块-根据ID获取',0),
-(12,'2019-12-10 16:31:55','2019-12-11 10:26:22','/category/list','com.tjnu.club.api.CategoryInfoService','listCategoryInfo','','',1,0,'版块-父版块列表',0),
-(13,'2019-12-10 16:32:04','2019-12-11 10:26:17','/category/listChild','com.tjnu.club.api.CategoryInfoService','listChildCategoryInfoById','["java.lang.String"]','["categoryId"]',1,0,'版块-指定父版块的子版块列表',0),
-(14,'2019-12-11 10:14:00','2019-12-11 10:26:06','/category/collected','com.tjnu.club.api.CategoryInfoService','categoryCollected','["java.lang.String","java.lang.String"]','["userId","categoryId"]',1,0,'版块-用户收藏',0),
-(15,'2019-12-11 10:14:04','2019-12-11 10:26:01','/category/collected/canceled','com.tjnu.club.api.CategoryInfoService','categoryCollectedCancel','["java.lang.String","java.lang.String"]','["userId","categoryId"]',1,0,'版块-用户取消收藏',0),
-(16,'2019-12-11 10:14:51','2019-12-11 10:25:56','/category/collected/List','com.tjnu.club.api.CategoryInfoService','listCategoryInfoCollected','["java.lang.String"]','["userId"]',1,0,'版块-用户收藏版块列表',0) ;
+  ('/user/update','com.tjnu.club.api.UserInfoService','updateUserInfo','["com.tjnu.club.vo.UserInfoVO"]','["userInfoVO"]',1,0,'用户-信息修改',0),
+  ('/user/delete','com.tjnu.club.api.UserInfoService','deleteUserInfo','["java.lang.String"]','["userId"]',1,0,'用户-逻辑删除',0),
+  ('/user/login','com.tjnu.club.api.RegisterLoginService','login','["java.lang.String","java.lang.String"]','["nickNameOrEmail","password"]',0,0,'用户-登录',0),
+  ('/user/register','com.tjnu.club.api.RegisterLoginService','register','["com.tjnu.club.vo.UserInfoVO"]','["userInfoVO"]',0,0,'用户-注册',0),
+  ('/user/logout','com.tjnu.club.api.RegisterLoginService','logout','["java.lang.String"]','["token"]',1,0,'用户-登出',0),
+  ('/email/sendCode','com.tjnu.club.api.RegisterLoginService','emailVerify','["java.lang.String"]','["email"]',0,0,'验证码-发送邮箱验证码',0),
+  ('/user/get','com.tjnu.club.api.UserInfoService','getUserInfoByUserId','["java.lang.String"]','["userId"]',1,0,'用户-信息获取',0),
+  ('/category/save','com.tjnu.club.api.CategoryInfoService','saveCategoryInfo','["com.tjnu.club.vo.CategoryInfoVO"]','["categoryInfoVO"]',1,0,'版块-新增',0),
+  ('/category/update','com.tjnu.club.api.CategoryInfoService','updateCategoryInfo','["com.tjnu.club.vo.CategoryInfoVO"]','["categoryInfoVO"]',1,0,'版块-修改',0),
+  ('/category/delete','com.tjnu.club.api.CategoryInfoService','deleteCategoryInfo','["java.lang.String"]','["categoryId"]',1,0,'版块-删除',0),
+  ('/category/get','com.tjnu.club.api.CategoryInfoService','getCategoryInfoById','["java.lang.String"]','["categoryId"]',1,0,'版块-根据ID获取',0),
+  ('/category/list','com.tjnu.club.api.CategoryInfoService','listCategoryInfo','','',1,0,'版块-父版块列表',0),
+  ('/category/listChild','com.tjnu.club.api.CategoryInfoService','listChildCategoryInfoById','["java.lang.String"]','["categoryId"]',1,0,'版块-指定父版块的子版块列表',0),
+  ('/category/collected','com.tjnu.club.api.CategoryInfoService','categoryCollected','["java.lang.String","java.lang.String"]','["userId","categoryId"]',1,0,'版块-用户收藏',0),
+  ('/category/collected/canceled','com.tjnu.club.api.CategoryInfoService','categoryCollectedCancel','["java.lang.String","java.lang.String"]','["userId","categoryId"]',1,0,'版块-用户取消收藏',0),
+  ('/category/collected/List','com.tjnu.club.api.CategoryInfoService','listCategoryInfoCollected','["java.lang.String"]','["userId"]',1,0,'版块-用户收藏版块列表',0),
+  ('/blog/save','com.tjnu.club.api.BlogInfoService','saveBlogInfo','["com.tjnu.club.vo.BlogInfoVO"]','["blogInfoVO"]',1,0,'帖子-新增',0),
+  ('/blog/update','com.tjnu.club.api.BlogInfoService','updateBlogInfo','["com.tjnu.club.vo.BlogInfoVO"]','["blogInfoVO"]',1,0,'帖子-修改',0),
+  ('/blog/delete','com.tjnu.club.api.BlogInfoService','deleteBlogInfo','["java.lang.String"]','["blogId"]',1,0,'帖子-删除',0),
+  ('/blog/list/main','com.tjnu.club.api.BlogInfoService','listMainBlogInfoByCategoryId','["java.lang.String","java.lang.Integer","java.lang.Integer"]','["categoryId","currentPage","pageSize"]',1,0,'帖子-获取指定板块下的主贴列表',0),
+  ('/blog/list/top','com.tjnu.club.api.BlogInfoService','listBlogInfoTopN','["java.lang.Integer"]','["topN"]',1,0,'帖子-获取当日热门回复的帖子列表',0),
+  ('/blog/get/main','com.tjnu.club.api.BlogInfoService','getMainBlogInfoByBlogId','["java.lang.String"]','["blogId"]',1,0,'帖子-根据帖子ID获取主帖详情',0),
+  ('/blog/list/child','com.tjnu.club.api.BlogInfoService','listChildBlogInfoByBlogId','["java.lang.String","java.lang.Integer","java.lang.Integer"]','["blogId","currentPage","pageSize"]',1,0,'帖子-根据主贴ID，获取回帖的列表',0),
+  ('/blog/list/deployed','com.tjnu.club.api.BlogInfoService','listBlogInfoByUserId','["java.lang.String","java.lang.Integer","java.lang.Integer"]','["userId","currentPage","pageSize"]',1,0,'帖子-根据用户ID，获取用户发布过的帖子列表',0),
+  ('/blog/collected','com.tjnu.club.api.BlogInfoService','blogCollected','["java.lang.String","java.lang.String"]','["userId","blogId"]',1,0,'帖子-用户收藏帖子',0),
+  ('/blog/collected/canceled','com.tjnu.club.api.BlogInfoService','blogCollectedCancel','["java.lang.String","java.lang.String"]','["userId","blogId"]',1,0,'帖子-用户取消已收藏的帖子',0),
+  ('/blog/collected/list','com.tjnu.club.api.BlogInfoService','listBlogInfoCollected','["java.lang.String","java.lang.Integer","java.lang.Integer"]','["userId","currentPage","pageSize"]',1,0,'帖子-获取用户已收藏的帖子列表',0) ;
 
 
 

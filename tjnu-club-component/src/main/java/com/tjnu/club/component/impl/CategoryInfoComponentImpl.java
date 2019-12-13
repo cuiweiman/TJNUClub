@@ -5,6 +5,7 @@ import com.tjnu.club.component.CategoryInfoComponent;
 import com.tjnu.club.enums.TJNUResultEnum;
 import com.tjnu.club.exceptions.TJNUException;
 import com.tjnu.club.info.CategoryInfo;
+import com.tjnu.club.mapper.BlogInfoMapper;
 import com.tjnu.club.mapper.CategoryInfoMapper;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,9 @@ public class CategoryInfoComponentImpl implements CategoryInfoComponent {
 
     @Resource
     private CategoryInfoMapper categoryInfoMapper;
+
+    @Resource
+    private BlogInfoMapper blogInfoMapper;
 
     @Override
     public Boolean saveCategoryInfo(CategoryInfo categoryInfo) {
@@ -63,7 +67,11 @@ public class CategoryInfoComponentImpl implements CategoryInfoComponent {
         if (childCategoryList.size() > 0) {
             throw new TJNUException(TJNUResultEnum.CATEGORY_DELETE_FORBIDDEN);
         }
-        // TODO 禁止删除有文章的版块
+        // 禁止删除 有帖子的版块
+        Long count = blogInfoMapper.countMainBlogInfoByCategoryId(categoryId);
+        if (count > 0L) {
+            throw new TJNUException(TJNUResultEnum.CATEGORY_DELETE_CANNOT);
+        }
         Integer result = categoryInfoMapper.deleteCategoryInfo(categoryId);
         if (result != 1) {
             throw new TJNUException(TJNUResultEnum.CATEGORY_DELETE_FAILURE);

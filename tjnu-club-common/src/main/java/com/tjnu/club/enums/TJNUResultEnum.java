@@ -53,6 +53,7 @@ public enum TJNUResultEnum implements Serializable {
     CATEGORY_COLLECTED_FAILURE(1028,"版块收藏失败"),
     CATEGORY_HAS_NOT_COLLECTED(1029,"该板块尚未被收藏"),
     CATEGORY_CANCEL_COLLECTED_FAILURE(1030,"该板块取消收藏失败"),
+    CATEGORY_DELETE_CANNOT(1031,"该板块下有帖子，不能删除"),
 
     /**
      * 帖子 错误码 1041-1060

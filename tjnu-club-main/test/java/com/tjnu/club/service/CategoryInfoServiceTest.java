@@ -43,7 +43,7 @@ public class CategoryInfoServiceTest extends TJNUClubTest {
 
     @Test
     public void deleteCategoryInfo(){
-        String categoryId = "157596138576589";
+        String categoryId = "157596836253956";
         ResultVO<Boolean> result = categoryInfoService.deleteCategoryInfo(categoryId);
         System.out.println(JSON.toJSON(result));
     }
