@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
-    <property name="LOG_PATH" value="/TJNUClub/logs"/>
+
+    <property name="LOG_PATH" value="/tjnu/logs"/>
+
     <!--配置控制台的日志格式输出-->
     <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
