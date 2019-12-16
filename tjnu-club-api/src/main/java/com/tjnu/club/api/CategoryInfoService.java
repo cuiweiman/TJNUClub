@@ -1,9 +1,11 @@
 package com.tjnu.club.api;
 
+import com.tjnu.club.vo.CategoryAllInfoVO;
 import com.tjnu.club.vo.CategoryInfoVO;
 import com.tjnu.club.vo.ResultVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: WeiMan Cui
@@ -84,5 +86,12 @@ public interface CategoryInfoService {
      * @return
      */
     ResultVO<List<CategoryInfoVO>> listCategoryInfoCollected(String userId);
+
+    /**
+     * 获取父版块及其对应的子版块，并查询子版块下所属帖子的数量。
+     *
+     * @return
+     */
+    ResultVO<List<CategoryAllInfoVO>> listAllCategoryInfo();
 
 }

@@ -3,6 +3,7 @@ package com.tjnu.club.service;
 import com.alibaba.fastjson.JSON;
 import com.tjnu.club.TJNUClubTest;
 import com.tjnu.club.api.CategoryInfoService;
+import com.tjnu.club.vo.CategoryAllInfoVO;
 import com.tjnu.club.vo.CategoryInfoVO;
 import com.tjnu.club.vo.ResultVO;
 import org.junit.Test;
@@ -91,5 +92,10 @@ public class CategoryInfoServiceTest extends TJNUClubTest {
         System.out.println(JSON.toJSON(result));
     }
 
+    @Test
+    public void listAllCategoryInfo(){
+        ResultVO<List<CategoryAllInfoVO>> result = categoryInfoService.listAllCategoryInfo();
+        System.out.println(JSON.toJSON(result));
+    }
 
 }

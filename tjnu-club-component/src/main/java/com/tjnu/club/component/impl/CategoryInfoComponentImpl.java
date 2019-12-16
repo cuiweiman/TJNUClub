@@ -4,9 +4,11 @@ import cn.hutool.core.util.ObjectUtil;
 import com.tjnu.club.component.CategoryInfoComponent;
 import com.tjnu.club.enums.TJNUResultEnum;
 import com.tjnu.club.exceptions.TJNUException;
+import com.tjnu.club.info.CategoryAllInfo;
 import com.tjnu.club.info.CategoryInfo;
 import com.tjnu.club.mapper.BlogInfoMapper;
 import com.tjnu.club.mapper.CategoryInfoMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -128,6 +130,22 @@ public class CategoryInfoComponentImpl implements CategoryInfoComponent {
     public List<CategoryInfo> listCategoryInfoCollected(String userId) {
         List<CategoryInfo> infoList = Optional.ofNullable(categoryInfoMapper.listCategoryInfoCollected(userId)).orElse(new ArrayList<>());
         return infoList;
+    }
+
+    @Override
+    public List<CategoryAllInfo> listAllCategoryInfo() {
+        List<CategoryAllInfo> result = new ArrayList<>();
+        // 获取父版块列表
+        List<CategoryInfo> parentList = listCategoryInfo();
+        //循环获取子版块列表和版块中帖子的总数
+        parentList.forEach(parent->{
+            CategoryAllInfo info = new CategoryAllInfo();
+            BeanUtils.copyProperties(parent,info);
+            List<CategoryInfo> childList = Optional.ofNullable(categoryInfoMapper.listChildCategoryInfoAndNumByParentId(parent.getCategoryId())).orElse(new ArrayList<>());
+            info.setChild(childList);
+            result.add(info);
+        });
+        return result;
     }
 
     // 根据 版块名称 获取 除 指定版块ID 之外的其他版块，用于 版块名称查重

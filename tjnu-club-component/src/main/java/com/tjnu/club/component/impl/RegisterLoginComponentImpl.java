@@ -93,7 +93,7 @@ public class RegisterLoginComponentImpl implements RegisterLoginComponent {
         String code = KeyFactory.genRandomNumber();
         //保存到redis中
         String key = TJNUConstants.VERIFY_CODE_KEY_PREFIX + email + TJNUConstants.VERIFY_CODE_KEY_SUFIX;
-        Boolean saveRedis = redisDao.set(key, code, 120);
+        Boolean saveRedis = redisDao.set(key, code, 180);
         if (!saveRedis) {
             throw new TJNUException(TJNUResultEnum.USER_VERIFY_SAVE_FAILURE);
         }

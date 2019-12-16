@@ -8,6 +8,7 @@
         <result column="category_id" jdbcType="VARCHAR" property="categoryId"/>
         <result column="category_name" jdbcType="VARCHAR" property="categoryName"/>
         <result column="top_category" jdbcType="INTEGER" property="topCategory"/>
+        <result column="blog_num" jdbcType="INTEGER" property="blogNum"/>
         <result column="parent_category_id" jdbcType="VARCHAR" property="parentCategoryId"/>
         <result column="is_deleted" jdbcType="BIGINT" property="isDeleted"/>
     </resultMap>
@@ -108,6 +109,14 @@
         SELECT c.*
         FROM user_category_collected u LEFT JOIN category_info c ON u.category_id=c.category_id AND c.is_deleted=0
         WHERE u.user_id = #{userId} AND u.is_deleted = 0
+    </select>
+
+    <select id="listChildCategoryInfoAndNumByParentId" resultMap="BaseResultMap">
+        SELECT c.`gmt_create`,c.`gmt_modified`,c.`category_id`,c.`category_name`,COUNT(b.`blog_name`) AS 'blog_num'
+        FROM `category_info` c LEFT JOIN `blog_info` b ON c.`category_id`=b.`category_id` AND c.`is_deleted`=b.`is_deleted`
+        WHERE c.`top_category`=1 AND c.`is_deleted`=0 AND c.`parent_category_id`=#{parentId}
+        GROUP BY c.`category_id`
+        ORDER BY c.`gmt_create` ASC
     </select>
 
 </mapper>

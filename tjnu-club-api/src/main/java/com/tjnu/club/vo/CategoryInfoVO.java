@@ -25,6 +25,9 @@ public class CategoryInfoVO implements Serializable {
     // 父版块ID
     private String parentCategoryId;
 
+    // 属于该板块的帖子的数量
+    private Integer blogNum;
+
     //逻辑删除。0-未删除，时间戳-删除。
     private Long isDeleted;
 

@@ -1,5 +1,6 @@
 package com.tjnu.club.component;
 
+import com.tjnu.club.info.CategoryAllInfo;
 import com.tjnu.club.info.CategoryInfo;
 
 import java.util.List;
@@ -85,5 +86,13 @@ public interface CategoryInfoComponent {
      * @return
      */
     List<CategoryInfo> listCategoryInfoCollected(String userId);
+
+
+    /**
+     * 获取父版块列表、子版块列表、子版块帖子总数
+     *
+     * @return
+     */
+    List<CategoryAllInfo> listAllCategoryInfo();
 
 }

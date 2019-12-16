@@ -6,9 +6,11 @@ import com.tjnu.club.constants.TJNUService;
 import com.tjnu.club.enums.TJNUResultEnum;
 import com.tjnu.club.enums.TJNUStatusEnums;
 import com.tjnu.club.exceptions.TJNUException;
+import com.tjnu.club.info.CategoryAllInfo;
 import com.tjnu.club.info.CategoryInfo;
 import com.tjnu.club.service.util.ServiceTransferUtil;
 import com.tjnu.club.utils.KeyFactory;
+import com.tjnu.club.vo.CategoryAllInfoVO;
 import com.tjnu.club.vo.CategoryInfoVO;
 import com.tjnu.club.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -159,6 +162,21 @@ public class CategoryInfoServiceImpl extends TJNUService implements CategoryInfo
             List<CategoryInfo> infoList = categoryInfoComponent.listCategoryInfoCollected(userId);
             List<CategoryInfoVO> voList = infoList.stream().map(info -> ServiceTransferUtil.categoryInfo2Vo(info)).collect(Collectors.toList());
             return new ResultVO<>(voList);
+        } catch (TJNUException e) {
+            log.error(e.getMsg(), e);
+            return new ResultVO<>(e);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return new ResultVO<>(new TJNUException());
+        }
+    }
+
+    @Override
+    public ResultVO<List<CategoryAllInfoVO>> listAllCategoryInfo() {
+        try {
+            List<CategoryAllInfo> allInfos = categoryInfoComponent.listAllCategoryInfo();
+            List<CategoryAllInfoVO> allVos = allInfos.stream().map(info->ServiceTransferUtil.categoryAllInfo2Vo(info)).collect(Collectors.toList());
+            return new ResultVO<>(allVos);
         } catch (TJNUException e) {
             log.error(e.getMsg(), e);
             return new ResultVO<>(e);

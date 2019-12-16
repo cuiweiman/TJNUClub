@@ -2,17 +2,15 @@ package com.tjnu.club.service.util;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.tjnu.club.info.BlogInfo;
-import com.tjnu.club.info.CategoryInfo;
-import com.tjnu.club.info.UserBlogInfo;
-import com.tjnu.club.info.UserInfo;
-import com.tjnu.club.vo.BlogInfoVO;
-import com.tjnu.club.vo.CategoryInfoVO;
-import com.tjnu.club.vo.UserBlogInfoVO;
-import com.tjnu.club.vo.UserInfoVO;
+import com.tjnu.club.info.*;
+import com.tjnu.club.vo.*;
 import org.springframework.beans.BeanUtils;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @Author: WeiMan Cui
@@ -122,6 +120,20 @@ public class ServiceTransferUtil {
         UserBlogInfoVO vo = new UserBlogInfoVO();
         vo.setUserInfoVO(userInfoVO);
         vo.setBlogInfoVO(blogInfoVO);
+        return vo;
+    }
+
+    public static CategoryAllInfoVO categoryAllInfo2Vo(CategoryAllInfo info) {
+        CategoryAllInfoVO vo = new CategoryAllInfoVO();
+        BeanUtils.copyProperties(info, vo);
+        if (info.getGmtCreate() != null) {
+            vo.setGmtCreate(info.getGmtCreate().getTime());
+        }
+        if (info.getGmtModified() != null) {
+            vo.setGmtModified(info.getGmtModified().getTime());
+        }
+        List<CategoryInfoVO> child = Optional.ofNullable(info.getChild().stream().map(childInfo->categoryInfo2Vo(childInfo)).collect(Collectors.toList())).orElse(new ArrayList<>());
+        vo.setChild(child);
         return vo;
     }
 

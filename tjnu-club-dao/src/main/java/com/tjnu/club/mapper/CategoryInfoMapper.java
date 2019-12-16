@@ -1,5 +1,6 @@
 package com.tjnu.club.mapper;
 
+import com.tjnu.club.info.CategoryAllInfo;
 import com.tjnu.club.info.CategoryInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -101,4 +102,6 @@ public interface CategoryInfoMapper {
      * @return
      */
     List<CategoryInfo> listCategoryInfoCollected(@Param("userId") String userId);
+
+    List<CategoryInfo> listChildCategoryInfoAndNumByParentId(@Param("parentId") String parentId);
 }
