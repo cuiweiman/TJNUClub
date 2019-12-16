@@ -40,6 +40,7 @@
         <lombok.version>1.18.4</lombok.version>
         <hutool.version>5.0.3</hutool.version>
         <mail.version>1.4.7</mail.version>
+        <qiniu.version>7.2.7</qiniu.version>
     </properties>
 
     <dependencyManagement>
@@ -137,16 +138,25 @@
                 <version>${lombok.version}</version>
             </dependency>
 
+            <!--糊涂-->
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
             </dependency>
 
+            <!--邮件-->
             <dependency>
                 <groupId>javax.mail</groupId>
                 <artifactId>mail</artifactId>
                 <version>${mail.version}</version>
+            </dependency>
+
+            <!--七牛云-->
+            <dependency>
+                <groupId>com.qiniu</groupId>
+                <artifactId>qiniu-java-sdk</artifactId>
+                <version>${qiniu.version}</version>
             </dependency>
 
         </dependencies>

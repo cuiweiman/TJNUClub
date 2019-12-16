@@ -63,7 +63,7 @@ public class UserInfoServiceImpl extends TJNUService implements UserInfoService 
         try {
             UserInfo info = userInfoComponent.getUserInfoByUserId(userId);
             UserInfoVO vo = ServiceTransferUtil.userInfo2VO(info);
-            return new ResultVO<UserInfoVO>(vo);
+            return new ResultVO<>(vo);
         } catch (TJNUException e) {
             log.error(e.getMsg(), e);
             return new ResultVO<>(e);

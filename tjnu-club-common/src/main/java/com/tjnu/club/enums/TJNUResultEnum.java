@@ -21,6 +21,12 @@ public enum TJNUResultEnum implements Serializable {
     SYSTEM_BAD_GATEWAY(502, "网关异常"),
     SYSTEM_API_NAME_ERROR(510, "接口不存在异常"),
     SYSTEM_TOKEN_FAILURE(520, "TJNUToken不能为空"),
+    UPLOAD_IMG_EMPTY(550,"上传的图片为空"),
+    UPLOAD_IMG_NAME_INVALID(551,"上传图片名称非法"),
+    UPLOAD_IMG_TYPE_INVALID(552,"上传图片的类型不合法"),
+    UPLOAD_IMG_FAILURE(553,"上传图片失败"),
+    DOWN_IMG_KEY_FAILURE(555,"图片的key错误，下载失败"),
+    DOWN_IMG_FAILURE(555,"图片下载失败"),
 
     /**
      * 用户注册 错误码 1000-1020

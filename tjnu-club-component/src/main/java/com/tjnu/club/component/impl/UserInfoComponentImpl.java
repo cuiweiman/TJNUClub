@@ -1,12 +1,14 @@
 package com.tjnu.club.component.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.tjnu.club.component.UserInfoComponent;
 import com.tjnu.club.enums.TJNUResultEnum;
 import com.tjnu.club.exceptions.TJNUException;
 import com.tjnu.club.info.UserInfo;
 import com.tjnu.club.mapper.UserInfoMapper;
 import com.tjnu.club.utils.KeyFactory;
+import com.tjnu.club.utils.QiniuUtil;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -94,6 +96,11 @@ public class UserInfoComponentImpl implements UserInfoComponent {
     @Override
     public UserInfo getUserInfoByUserId(String userId) {
         UserInfo info = userInfoMapper.getUserInfoByUserId(userId);
+        String userKey = Optional.ofNullable(info.getUserImg()).orElse("");
+        if(!StrUtil.isEmpty(userKey)){
+            String url = QiniuUtil.readUrl(userKey);
+            info.setUserImg(url);
+        }
         return info;
     }
 
