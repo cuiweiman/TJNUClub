@@ -33,8 +33,6 @@ public class QiniuUtil {
 
     private static UploadManager uploadManager = new UploadManager(cfg);
 
-    private static String upToken = auth.uploadToken(bucketName);
-
     private static List<String> imgTypeList = Arrays.asList("png", "jpg", "jpeg");
 
     private static Long expireInSeconds = 3600L;
@@ -59,6 +57,7 @@ public class QiniuUtil {
             }
 
             String imgName = KeyFactory.genDateNo() + "." + fileExt;
+            String upToken = auth.uploadToken(bucketName);
             Response res = uploadManager.put(image.getBytes(), imgName, upToken);
             // 打印返回的信息
             if (res.isOK() && res.isJson()) {
