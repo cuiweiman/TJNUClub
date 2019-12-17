@@ -107,6 +107,16 @@ public interface BlogInfoService {
      * @param userId
      * @return
      */
-    ResultVO<PageInfoVO<UserBlogInfoVO>> listBlogInfoCollected(String userId,Integer currentPage,Integer pageSize);
+    ResultVO<PageInfoVO<UserBlogInfoVO>> listBlogInfoCollected(String userId, Integer currentPage, Integer pageSize);
+
+
+    /**
+     * 帖子点赞接口。
+     *
+     * @param userId
+     * @param blogId
+     * @return 点赞个数
+     */
+    ResultVO<Integer> blogZan(String userId, String blogId);
 
 }

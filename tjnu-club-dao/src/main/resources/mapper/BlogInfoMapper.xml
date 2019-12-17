@@ -68,6 +68,12 @@
             <if test="topBlog==1 and parentBlogId!=null">
                 parent_blog_id = #{parentBlogId},
             </if>
+            <if test="zanTimes!=null">
+                zan_times = #{zanTimes},
+            </if>
+            <if test="readTimes!=null">
+                read_times = #{readTimes},
+            </if>
         </set>
         WHERE blog_id = #{blogId} AND is_deleted = 0 AND user_id = #{userId}
     </update>

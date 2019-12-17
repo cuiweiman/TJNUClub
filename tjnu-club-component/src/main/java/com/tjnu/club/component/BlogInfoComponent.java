@@ -104,4 +104,12 @@ public interface BlogInfoComponent {
     Map<String, Object> listBlogInfoCollected(String userId, Integer currentPage, Integer pageSize);
 
 
+    /**
+     * 帖子点赞
+     *
+     * @param userId
+     * @param blogId
+     * @return
+     */
+    Integer blogZan(String userId, String blogId);
 }

@@ -116,4 +116,13 @@ public class BlogInfoServiceTest extends TJNUClubTest {
         ResultVO<PageInfoVO<UserBlogInfoVO>> result = blogInfoService.listBlogInfoCollected(userId, currentPage, pageSize);
         System.out.println(JSON.toJSON(result));
     }
+
+    @Test
+    public void blogZan() {
+        String userId = "1000";
+        String blogId = "1005";
+        ResultVO<Integer> result = blogInfoService.blogZan(userId, blogId);
+        System.out.println(JSON.toJSON(result));
+    }
+
 }

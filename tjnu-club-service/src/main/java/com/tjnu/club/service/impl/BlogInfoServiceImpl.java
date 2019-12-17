@@ -221,6 +221,21 @@ public class BlogInfoServiceImpl extends TJNUService implements BlogInfoService 
         }
     }
 
+    @Override
+    public ResultVO<Integer> blogZan(String userId, String blogId) {
+        super.notBlank("用户ID", userId).notBlank("帖子ID", blogId);
+        try {
+            Integer result = blogInfoComponent.blogZan(userId, blogId);
+            return new ResultVO<>(result);
+        } catch (TJNUException e) {
+            log.error(e.getMsg(), e);
+            return new ResultVO<>(e);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return new ResultVO<>(new TJNUException());
+        }
+    }
+
     private void checkParam(BlogInfoVO vo) {
         super.notNull("帖子信息", vo).notNull("帖子内容", vo.getBlogContent())
                 .notBlank("帖子所属版块ID", vo.getCategoryId()).notBlank("用户ID", vo.getUserId())

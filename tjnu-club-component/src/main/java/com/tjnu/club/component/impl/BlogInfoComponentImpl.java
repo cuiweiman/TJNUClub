@@ -6,8 +6,11 @@ import com.tjnu.club.enums.TJNUResultEnum;
 import com.tjnu.club.exceptions.TJNUException;
 import com.tjnu.club.info.BlogInfo;
 import com.tjnu.club.info.UserBlogInfo;
+import com.tjnu.club.info.ZanInfo;
 import com.tjnu.club.mapper.BlogInfoMapper;
+import com.tjnu.club.mapper.ZanInfoMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -17,6 +20,9 @@ public class BlogInfoComponentImpl implements BlogInfoComponent {
 
     @Resource
     private BlogInfoMapper blogInfoMapper;
+
+    @Resource
+    private ZanInfoMapper zanInfoMapper;
 
 
     @Override
@@ -90,6 +96,11 @@ public class BlogInfoComponentImpl implements BlogInfoComponent {
     @Override
     public UserBlogInfo getMainBlogInfoByBlogId(String blogId) {
         UserBlogInfo info = blogInfoMapper.getMainBlogInfoByBlogId(blogId);
+        //增加阅读次数
+        BlogInfo blog = info.getBlogInfo();
+        Integer readTimes = blog.getReadTimes() + 1;
+        blog.setReadTimes(readTimes);
+        updateBlogInfo(blog);
         return info;
     }
 
@@ -149,11 +160,31 @@ public class BlogInfoComponentImpl implements BlogInfoComponent {
     @Override
     public Map<String, Object> listBlogInfoCollected(String userId, Integer currentPage, Integer pageSize) {
         Long count = Optional.ofNullable(blogInfoMapper.countBlogInfoCollected(userId)).orElse(0L);
-        List<UserBlogInfo> infoList = Optional.ofNullable(blogInfoMapper.listBlogInfoCollected(userId,currentPage,pageSize)).orElse(new ArrayList<>());
-        Map<String,Object> map = new HashMap<>();
-        map.put("count",count);
-        map.put("data",infoList);
+        List<UserBlogInfo> infoList = Optional.ofNullable(blogInfoMapper.listBlogInfoCollected(userId, currentPage, pageSize)).orElse(new ArrayList<>());
+        Map<String, Object> map = new HashMap<>();
+        map.put("count", count);
+        map.put("data", infoList);
         return map;
+    }
+
+    @Transactional
+    @Override
+    public Integer blogZan(String userId, String blogId) {
+        //判断是否已点赞
+        ZanInfo zanInfo = zanInfoMapper.getZan(userId, blogId);
+        if (ObjectUtil.isEmpty(zanInfo)) {//尚未点赞，点赞
+            zanInfoMapper.zan(userId, blogId);
+        } else {//已点赞，取消
+            zanInfoMapper.zanCancel(userId, blogId);
+        }
+        Integer count = zanInfoMapper.zanCount(blogId);
+
+        //修改帖子点赞信息
+        BlogInfo blogInfo = getBlogInfoByBlogId(blogId);
+        blogInfo.setZanTimes(count);
+        blogInfoMapper.updateBlogInfo(blogInfo);
+
+        return count;
     }
 
     // 根据帖子ID查询帖子信息
