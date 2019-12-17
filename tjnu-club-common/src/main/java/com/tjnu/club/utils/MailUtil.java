@@ -36,6 +36,10 @@ public class MailUtil {
             Properties prop = new Properties();
             prop.setProperty("mail.host", "smtp.163.com");    //设置服务器主机名
             prop.setProperty("mail.smtp.auth", "true");    //设置需要认证
+            prop.setProperty("mail.smtp.port","465");
+            prop.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+            prop.setProperty("mail.smtp.socketFactory.fallback", "false");
+
             Authenticator auth = new Authenticator() {
                 public PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(FROM_MAIL, PASSWORD);//用户名和密码
