@@ -3,6 +3,7 @@ package com.tjnu.club.service.util;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.tjnu.club.info.*;
+import com.tjnu.club.utils.QiniuUtil;
 import com.tjnu.club.vo.*;
 import org.springframework.beans.BeanUtils;
 
@@ -52,6 +53,7 @@ public class ServiceTransferUtil {
         if (info.getLastLoginTime() != null) {
             vo.setLastLoginTime(info.getLastLoginTime().getTime());
         }
+        vo.setUserImg(QiniuUtil.readUrl(vo.getUserImg()));
         vo.setPassword(null);
         return vo;
     }
@@ -120,6 +122,7 @@ public class ServiceTransferUtil {
         UserBlogInfoVO vo = new UserBlogInfoVO();
         vo.setUserInfoVO(userInfoVO);
         vo.setBlogInfoVO(blogInfoVO);
+
         return vo;
     }
 

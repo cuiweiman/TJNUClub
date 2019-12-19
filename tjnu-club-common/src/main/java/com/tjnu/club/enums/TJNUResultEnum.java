@@ -27,6 +27,8 @@ public enum TJNUResultEnum implements Serializable {
     UPLOAD_IMG_FAILURE(553,"上传图片失败"),
     DOWN_IMG_KEY_FAILURE(555,"图片的key错误，下载失败"),
     DOWN_IMG_FAILURE(555,"图片下载失败"),
+    ASPECT_IP_VISITED_PARAM(560,"方法中缺失HttpServletRequest参数"),
+    ASPECT_IP_VISITED_LIMIT(561,"抱歉，您的访问次数过于频繁，请歇息片刻……"),
 
     /**
      * 用户注册 错误码 1000-1020

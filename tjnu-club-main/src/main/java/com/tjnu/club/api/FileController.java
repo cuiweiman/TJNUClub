@@ -25,9 +25,9 @@ public class FileController {
     private RedisDao redisDao;
 
     @PostMapping("/upload")
-    public ResultVO<String> upload(@RequestParam("TJNUToken") String token, @RequestParam MultipartFile image) {
-        checkParam(token,image);
+    public ResultVO<Object> upload(@RequestParam("TJNUToken") String token, @RequestParam MultipartFile image) {
         try {
+            checkParam(token,image);
             String key = QiniuUtil.uploadImg(image);
             return new ResultVO<>(key);
         } catch (TJNUException e) {

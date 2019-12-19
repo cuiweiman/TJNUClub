@@ -147,4 +147,14 @@ public class RedisDaoImpl implements RedisDao {
             throw new RuntimeException(e.getMessage(), e);
         }
     }
+
+    @Override
+    public Long incr(String key) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            return jedis.incr(key);
+        } catch (Exception e) {
+            log.error("redis连接池异常" + e.getMessage());
+            throw new RuntimeException(e.getMessage(),e);
+        }
+    }
 }

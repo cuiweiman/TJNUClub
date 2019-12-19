@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.tjnu.club.anno.RequestLimit;
 import com.tjnu.club.component.ApiMetaInfoComponent;
 import com.tjnu.club.constants.TJNUConstants;
 import com.tjnu.club.enums.TJNUResultEnum;
@@ -50,6 +51,7 @@ public class ApiGateway {
     @Resource
     private RedisDao redisDao;
 
+    @RequestLimit(count = 5,time = 1)
     @PostMapping("/api")
     public Object api(@RequestBody Object payload, HttpServletRequest request) {
         try {

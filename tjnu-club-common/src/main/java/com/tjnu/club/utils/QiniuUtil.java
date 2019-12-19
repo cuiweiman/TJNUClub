@@ -1,5 +1,6 @@
 package com.tjnu.club.utils;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
@@ -85,6 +86,9 @@ public class QiniuUtil {
      * @return
      */
     public static String readUrl(String key) {
+        if (StrUtil.isEmpty(key)){
+            return "";
+        }
         try {
             String encodedFileName = URLEncoder.encode(key, "utf-8").replace("+", "%20");
             String publicUrl = String.format("%s/%s", domain, encodedFileName);

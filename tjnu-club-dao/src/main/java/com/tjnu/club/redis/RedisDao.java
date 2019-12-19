@@ -86,4 +86,6 @@ public interface RedisDao {
     Integer expire(String key, Integer seconds);
 
 
+    Long incr(String key);
+
 }
