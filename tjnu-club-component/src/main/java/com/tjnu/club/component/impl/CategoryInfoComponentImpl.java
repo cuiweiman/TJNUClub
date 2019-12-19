@@ -1,6 +1,7 @@
 package com.tjnu.club.component.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.tjnu.club.component.CategoryInfoComponent;
 import com.tjnu.club.enums.TJNUResultEnum;
 import com.tjnu.club.exceptions.TJNUException;
@@ -12,9 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class CategoryInfoComponentImpl implements CategoryInfoComponent {
@@ -146,6 +145,30 @@ public class CategoryInfoComponentImpl implements CategoryInfoComponent {
             result.add(info);
         });
         return result;
+    }
+
+    @Override
+    public Map<String, Object> getCategoryBasicInfoByCategoryId(String categoryId) {
+        Map<String,Object> map = new HashMap<>(4);
+        CategoryInfo info = categoryInfoMapper.getCategoryInfoById(categoryId);
+        if(ObjectUtil.isEmpty(info)){
+            throw new TJNUException(TJNUResultEnum.CATEGORY_NOT_EXISTS);
+        }
+
+        Map<String,Object> parentMap = new HashMap<>(4);
+        if(StrUtil.isNotBlank(info.getParentCategoryId())){
+            CategoryInfo parent = categoryInfoMapper.getCategoryInfoById(info.getParentCategoryId());
+            if(ObjectUtil.isEmpty(parent)){
+                throw new TJNUException(TJNUResultEnum.CATEGORY_NOT_EXISTS);
+            }
+            parentMap.put("categoryId",parent.getCategoryId());
+            parentMap.put("categoryName",parent.getCategoryName());
+        }
+
+        map.put("categoryId",info.getCategoryId());
+        map.put("categoryName",info.getCategoryName());
+        map.put("parent",parentMap);
+        return map;
     }
 
     // 根据 版块名称 获取 除 指定版块ID 之外的其他版块，用于 版块名称查重

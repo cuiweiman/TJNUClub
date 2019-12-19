@@ -10,19 +10,20 @@ import org.junit.Test;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
-* @Author: WeiMan Cui
-* @Date: 2019/12/10 14:44
-* @Description: 版块 测试
-*/
+ * @Author: WeiMan Cui
+ * @Date: 2019/12/10 14:44
+ * @Description: 版块 测试
+ */
 public class CategoryInfoServiceTest extends TJNUClubTest {
 
     @Resource
     private CategoryInfoService categoryInfoService;
 
     @Test
-    public void saveCategoryInfo(){
+    public void saveCategoryInfo() {
         CategoryInfoVO vo = new CategoryInfoVO();
         vo.setCategoryName("青年教师联谊");
         vo.setTopCategory(1);
@@ -32,7 +33,7 @@ public class CategoryInfoServiceTest extends TJNUClubTest {
     }
 
     @Test
-    public void updateCategoryInfo(){
+    public void updateCategoryInfo() {
         CategoryInfoVO vo = new CategoryInfoVO();
         vo.setCategoryId("157596341020912");
         vo.setCategoryName("师大理工联谊");
@@ -43,58 +44,65 @@ public class CategoryInfoServiceTest extends TJNUClubTest {
     }
 
     @Test
-    public void deleteCategoryInfo(){
+    public void deleteCategoryInfo() {
         String categoryId = "157596836253956";
         ResultVO<Boolean> result = categoryInfoService.deleteCategoryInfo(categoryId);
         System.out.println(JSON.toJSON(result));
     }
 
     @Test
-    public void getCategoryInfoById(){
-        String categoryId = "157596138576589";
+    public void getCategoryInfoById() {
+        String categoryId = "157596839810138";
         ResultVO<CategoryInfoVO> result = categoryInfoService.getCategoryInfoById(categoryId);
         System.out.println(JSON.toJSON(result));
     }
 
     @Test
-    public void listCategoryInfo(){
+    public void listCategoryInfo() {
         ResultVO<List<CategoryInfoVO>> result = categoryInfoService.listCategoryInfo();
         System.out.println(JSON.toJSON(result));
     }
 
     @Test
-    public void listChildCategoryInfoById(){
+    public void listChildCategoryInfoById() {
         String categoryId = "157596138576589";
         ResultVO<List<CategoryInfoVO>> result = categoryInfoService.listChildCategoryInfoById(categoryId);
         System.out.println(JSON.toJSON(result));
     }
 
     @Test
-    public void categoryCollected(){
+    public void categoryCollected() {
         String userId = "1000";
         String categoryId = "157596138576589";
-        ResultVO<Boolean> result = categoryInfoService.categoryCollected(userId,categoryId);
+        ResultVO<Boolean> result = categoryInfoService.categoryCollected(userId, categoryId);
         System.out.println(JSON.toJSON(result));
     }
 
     @Test
-    public void categoryCollectedCancel(){
+    public void categoryCollectedCancel() {
         String userId = "1000";
         String categoryId = "157596138576589";
-        ResultVO<Boolean> result = categoryInfoService.categoryCollectedCancel(userId,categoryId);
+        ResultVO<Boolean> result = categoryInfoService.categoryCollectedCancel(userId, categoryId);
         System.out.println(JSON.toJSON(result));
     }
 
     @Test
-    public void listCategoryInfoCollected(){
+    public void listCategoryInfoCollected() {
         String userId = "1000";
         ResultVO<List<CategoryInfoVO>> result = categoryInfoService.listCategoryInfoCollected(userId);
         System.out.println(JSON.toJSON(result));
     }
 
     @Test
-    public void listAllCategoryInfo(){
+    public void listAllCategoryInfo() {
         ResultVO<List<CategoryAllInfoVO>> result = categoryInfoService.listAllCategoryInfo();
+        System.out.println(JSON.toJSON(result));
+    }
+
+    @Test
+    public void getCategoryBasicInfoByCategoryId() {
+        String categoryId = "157596341020912";
+        ResultVO<Map<String, Object>> result = categoryInfoService.getCategoryBasicInfoByCategoryId(categoryId);
         System.out.println(JSON.toJSON(result));
     }
 

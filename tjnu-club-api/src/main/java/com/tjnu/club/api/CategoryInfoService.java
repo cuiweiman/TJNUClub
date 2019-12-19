@@ -94,4 +94,13 @@ public interface CategoryInfoService {
      */
     ResultVO<List<CategoryAllInfoVO>> listAllCategoryInfo();
 
+
+    /**
+     * 获取 版块ID、Name 和 父版块 ID、Name
+     *
+     * @param categoryId
+     * @return
+     */
+    ResultVO<Map<String, Object>> getCategoryBasicInfoByCategoryId(String categoryId);
+
 }

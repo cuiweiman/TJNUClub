@@ -4,6 +4,7 @@ import com.tjnu.club.info.CategoryAllInfo;
 import com.tjnu.club.info.CategoryInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: WeiMan Cui
@@ -94,5 +95,15 @@ public interface CategoryInfoComponent {
      * @return
      */
     List<CategoryAllInfo> listAllCategoryInfo();
+
+
+
+    /**
+     * 获取 版块ID、Name 和 父版块 ID、Name
+     *
+     * @param categoryId
+     * @return
+     */
+    Map<String, Object> getCategoryBasicInfoByCategoryId(String categoryId);
 
 }

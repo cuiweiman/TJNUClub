@@ -186,6 +186,21 @@ public class CategoryInfoServiceImpl extends TJNUService implements CategoryInfo
         }
     }
 
+    @Override
+    public ResultVO<Map<String, Object>> getCategoryBasicInfoByCategoryId(String categoryId) {
+        super.notBlank("版块ID", categoryId);
+        try {
+            Map<String,Object> result  = categoryInfoComponent.getCategoryBasicInfoByCategoryId(categoryId);
+            return new ResultVO<>(result);
+        } catch (TJNUException e) {
+            log.error(e.getMsg(), e);
+            return new ResultVO<>(e);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return new ResultVO<>(new TJNUException());
+        }
+    }
+
     private void checkParam(CategoryInfoVO vo) {
         super.notNull("版块信息", vo).notBlank("版块名称", vo.getCategoryName())
                 .notNull("顶级版块标识", vo.getTopCategory());
