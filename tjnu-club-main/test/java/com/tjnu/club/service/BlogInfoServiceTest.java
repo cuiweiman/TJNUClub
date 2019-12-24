@@ -69,7 +69,7 @@ public class BlogInfoServiceTest extends TJNUClubTest {
 
     @Test
     public void getMainBlogInfoByBlogId() {
-        String blogId = "1000";
+        String blogId = "100";
         ResultVO<UserBlogInfoVO> result = blogInfoService.getMainBlogInfoByBlogId(blogId);
         System.out.println(JSON.toJSON(result));
     }

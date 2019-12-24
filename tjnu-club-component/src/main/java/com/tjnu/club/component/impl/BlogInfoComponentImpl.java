@@ -96,6 +96,9 @@ public class BlogInfoComponentImpl implements BlogInfoComponent {
     @Override
     public UserBlogInfo getMainBlogInfoByBlogId(String blogId) {
         UserBlogInfo info = blogInfoMapper.getMainBlogInfoByBlogId(blogId);
+        if(ObjectUtil.isEmpty(info)){
+            throw new TJNUException(TJNUResultEnum.BLOG_NOT_EXISTS);
+        }
         //增加阅读次数
         BlogInfo blog = info.getBlogInfo();
         Integer readTimes = blog.getReadTimes() + 1;
